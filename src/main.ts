@@ -24,7 +24,7 @@ export default class WheelTabSwitcher extends Plugin {
 			win.focus();
 
 			// Find the leaf (pane) associated with the wheel event
-			const leaf = findLeafByWheelEvent(evt, this.app);
+			const leaf = findLeafByWheelEvent(this.app, evt);
 
 			if (!leaf) return; // console.warn("failed to get leaf");
 

@@ -21,7 +21,7 @@ export function checkIsWheelInTabContainer(evt: WheelEvent): boolean {
  * @param app - Obsidian app
  * @returns The leaf object if found, otherwise null or undefined
  */
-export function findLeafByWheelEvent(evt: WheelEvent, app: App) {
+export function findLeafByWheelEvent(app: App, evt: WheelEvent) {
 	// Early return if the wheel event is not in a tab container
 	if (!checkIsWheelInTabContainer(evt)) {
 		return;
