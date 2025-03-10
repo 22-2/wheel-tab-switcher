@@ -60,7 +60,6 @@ export function findLeafByWheelEvent(
 	const wheeledTabContainer = (evt.target as HTMLElement).closest(
 		".workspace-tab-header-container",
 	);
-	logger.debug("wheeledTabContainer.owner:", wheeledTabContainer?.ownerDocument.title);
 
 	if (!wheeledTabContainer) {
 		return void logger.debug("wheeledTabContainer is null, return.");
@@ -71,7 +70,6 @@ export function findLeafByWheelEvent(
 	const wheeledTabHeader =
 		wheeledTabContainer.querySelector(".workspace-tab-header.is-active") ||
 		wheeledTabContainer.querySelector(".workspace-tab-header");
-	// logger.debug("wheeledTabHeader:", wheeledTabHeader);
 
 	if (!wheeledTabHeader) {
 		return void logger.debug("wheeledTabHeader is null, return.");

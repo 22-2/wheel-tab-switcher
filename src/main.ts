@@ -34,14 +34,6 @@ export default class WheelTabSwitcher extends Plugin {
 
 			// Ensure window is focused
 			getElectronMainWindow(wsWin.win).focus();
-			wsWin.win.focus();
-			this.logger.debug("owner", (evt.target as HTMLElement).ownerDocument.title);
-			// this.logger.debug("evt.view", evt.view?.document.title);
-			// this.logger.debug("[ELECTRON_WINDOW]", getElectronMainWindow(wsWin.win).getTitle());
-			// wsWin.win.focus();
-			// this.logger.debug("win.document", wsWin.win.document.title);
-			// this.logger.debug("document", document.title);
-			// this.logger.debug("activeDocument", activeDocument.title);
 
 			// Find the leaf (pane) associated with the wheel event
 			const leaf = findLeafByWheelEvent(this.app, this, evt);
