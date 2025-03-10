@@ -23,7 +23,6 @@ export function checkIsWheelInTabContainer(evt: WheelEvent): boolean {
 /**
  * Finds the leaf (pane) associated with a wheel event on tab headers
  * @param evt - The wheel event to process
- * @param app - Obsidian app
  * @returns The leaf object if found, otherwise null or undefined
  *
  * **This meticulous approach is essential to prevent unexpected tab focus jumps.**
@@ -41,7 +40,6 @@ export function checkIsWheelInTabContainer(evt: WheelEvent): boolean {
  * thus preventing erratic focus behavior and providing a smooth and predictable user interaction when using the mouse wheel on tab headers.
  */
 export function findLeafByWheelEvent(
-	app: App,
 	plugin: WheelTabSwitcher,
 	evt: WheelEvent,
 ) {
@@ -78,11 +76,11 @@ export function findLeafByWheelEvent(
 	if (plugin.settings.debug) highlightElement(wheeledTabHeader as HTMLElement, "red");
 
 	// Get all workspace parents
-	const wsParents = getAllWorkspaceParents(app);
+	const wsParents = getAllWorkspaceParents(plugin.app);
 	// logger.debug("wsParents:", wsParents);
 
 	// Find the leaf that matches the active tab header
-	const wheeledLeaf = getAllLeaves(app).find((leaf) =>
+	const wheeledLeaf = getAllLeaves(plugin.app).find((leaf) =>
 		leaf.tabHeaderEl.isEqualNode(wheeledTabHeader),
 	);
 	// logger.debug("wheeledLeaf:", wheeledLeaf);

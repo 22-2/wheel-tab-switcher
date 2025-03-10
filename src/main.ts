@@ -25,18 +25,18 @@ export default class WheelTabSwitcher extends Plugin {
 
 	/**
 	 * Creates a wheel event handler for a specific window
-	 * @param wsWin - The browser window object
+	 * @param win - The browser window object
 	 * @returns A wheel event handler function
 	 */
-	private createWheelHandler(wsWin: WorkspaceWindow) {
+	private createWheelHandler(win: Window) {
 		return (evt: WheelEvent) => {
 			this.logger.debug("called createWheelHandler");
 
 			// Ensure window is focused
-			getElectronMainWindow(wsWin.win).focus();
+			getElectronMainWindow(win).focus();
 
 			// Find the leaf (pane) associated with the wheel event
-			const leaf = findLeafByWheelEvent(this.app, this, evt);
+			const leaf = findLeafByWheelEvent(this, evt);
 
 			if (!leaf) return; this.logger.debug("failed to get leaf");
 
@@ -54,7 +54,7 @@ export default class WheelTabSwitcher extends Plugin {
 	 */
 	async onload() {
 		await this.loadSettings();
-		this.logger = new LoggerService(this);
+		this.logger = new LoggerService(this.settings);
 		this.logger.debug("WheelTabSwitcher init");
 		this.addSettingTab(new WheelTabSwitcherSettingTab(this));
 		this.app.workspace.onLayoutReady(() => {
@@ -68,7 +68,7 @@ export default class WheelTabSwitcher extends Plugin {
 					this.registerDomEvent(
 						wsWin.win,
 						"wheel",
-						this.createWheelHandler(wsWin),
+						this.createWheelHandler(wsWin.win),
 					);
 				}),
 			);
@@ -78,7 +78,7 @@ export default class WheelTabSwitcher extends Plugin {
 				this.registerDomEvent(
 					wsWin.win,
 					"wheel",
-					this.createWheelHandler(wsWin),
+					this.createWheelHandler(wsWin.win),
 				);
 			});
 
