@@ -5,7 +5,7 @@ import { ElectronWindow } from "obsidian-typings";
  * @param rendererWin - The renderer window object
  * @returns The corresponding Electron main window
  */
-export function getMainWindow(rendererWin: Window): ElectronWindow {
+export function getElectronMainWindow(rendererWin: Window): ElectronWindow {
 	// @ts-expect-error
 	return rendererWin.electronWindow;
 }

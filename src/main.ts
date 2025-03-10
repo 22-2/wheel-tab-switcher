@@ -1,6 +1,6 @@
 import { Plugin } from "obsidian";
 import { findLeafByWheelEvent } from "src/helper";
-import { getMainWindow } from "./utils/electron";
+import { getElectronMainWindow } from "./utils/electron";
 import { dev } from "./utils/logger";
 import { getAllWorkspaceWindows, gotoLeftTab, gotoRightTab, notify } from "./utils/obsidian";
 
@@ -17,7 +17,7 @@ export default class WheelTabSwitcher extends Plugin {
 	 */
 	private createWheelHandler(win: Window) {
 		return (evt: WheelEvent) => {
-			const currentMainWin = getMainWindow(win);
+			const currentMainWin = getElectronMainWindow(win);
 
 			if (!currentMainWin) {
 				return void notify("failed to find app window");
