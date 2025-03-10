@@ -17,7 +17,6 @@ export default class WheelTabSwitcher extends Plugin {
 	/**
 	 * Creates a wheel event handler for a specific window
 	 * @param win - The browser window object
-	 * @param wsWin - The Obsidian workspace window
 	 * @returns A wheel event handler function
 	 */
 	private createWheelHandler(win: Window) {
