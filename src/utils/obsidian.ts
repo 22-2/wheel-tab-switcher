@@ -88,7 +88,9 @@ function gotoSiblingTab(app: App, argLeaf: WorkspaceLeaf, direction: 1 | -1) {
 	const index = siblingLeaves.findIndex((leaf) => leaf.id === argLeaf.id);
 
 	if (index === -1) {
-		throw new Error(`Active leaf not found in sibling leaves. leafId: ${argLeaf.id}`);
+		throw new Error(
+			`Active leaf not found in sibling leaves. leafId: ${argLeaf.id}`,
+		);
 	}
 
 	const nextIndex = index + direction;
@@ -143,4 +145,11 @@ export function notify(
  */
 export function getActiveLeaf(app: App) {
 	return app.workspace.activeLeaf;
+}
+
+export function highlight(leaf: WorkspaceLeaf) {
+	// @ts-expect-error
+	leaf.highlight();
+	// @ts-expect-error
+	setTimeout(() => leaf.unhighlight(), 300);
 }

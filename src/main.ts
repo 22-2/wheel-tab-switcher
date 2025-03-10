@@ -1,18 +1,21 @@
-import { Plugin } from "obsidian";
+import { App, Plugin, WorkspaceWindow } from "obsidian";
 import { findLeafByWheelEvent } from "src/helpers";
-import { dev } from "./utils/logger";
+import { dev } from "./utils/debug";
 import {
 	getAllWorkspaceWindows,
 	gotoLeftSiblingTab,
 	gotoRightSiblingTab,
 	notify,
 } from "./utils/obsidian";
+import { getElectronMainWindow } from "./utils/electron";
+import { Settings, WheelTabSwitcherSettingTab } from "./settings";
 
 /**
  * Obsidian plugin that allows switching between tabs using the mouse wheel
  * when hovering over tab headers
  */
 export default class WheelTabSwitcher extends Plugin {
+	settings: Settings;
 	/**
 	 * Creates a wheel event handler for a specific window
 	 * @param win - The browser window object
@@ -21,7 +24,7 @@ export default class WheelTabSwitcher extends Plugin {
 	private createWheelHandler(win: Window) {
 		return (evt: WheelEvent) => {
 			// Ensure window is focused
-			win.focus();
+			getElectronMainWindow(win).focus();
 
 			// Find the leaf (pane) associated with the wheel event
 			const leaf = findLeafByWheelEvent(this.app, evt);
@@ -65,6 +68,11 @@ export default class WheelTabSwitcher extends Plugin {
 			);
 		});
 
+		this.addSettingTab(new WheelTabSwitcherSettingTab(this));
+
 		dev("init: wheel tab switcher");
+	}
+	saveSettings() {
+		this.saveData(this.settings);
 	}
 }
