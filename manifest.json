@@ -1,0 +1,11 @@
+{
+	"id": "wheel-tab-switcher",
+	"name": "Wheel Tab Switcher",
+	"version": "1.0.0",
+	"minAppVersion": "0.15.0",
+	"description": "Demonstrates some of the capabilities of the Obsidian API.",
+	"author": "Obsidian",
+	"authorUrl": "https://github.com/22-2/wheel-tab-switcher",
+	"fundingUrl": "https://buymeacoffee.com/22_2momon",
+	"isDesktopOnly": false
+}
