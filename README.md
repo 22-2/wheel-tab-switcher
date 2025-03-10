@@ -11,6 +11,10 @@ A plugin for [Obsidian](https://obsidian.md) that allows you to switch between t
 - Works across all Obsidian windows, including popout windows
 - Automatically restores minimized windows when switching tabs
 
+## Demo
+
+![Demo Video](https://media.githubusercontent.com/media/22-2/wheel-tab-switcher/refs/heads/main/assets/demo.gif?raw=true)
+
 ## How to Use
 
 1. Install the plugin
