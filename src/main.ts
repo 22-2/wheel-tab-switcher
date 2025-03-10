@@ -1,18 +1,18 @@
-import { App, Plugin, WorkspaceWindow } from "obsidian";
+import { Plugin } from "obsidian";
 import { findLeafByWheelEvent } from "src/helpers";
+import {
+	DEFAULT_SETTINGS,
+	Settings,
+	WheelTabSwitcherSettingTab,
+} from "./settings";
 import { dev } from "./utils/debug";
+import { getElectronMainWindow } from "./utils/electron";
 import {
 	getAllWorkspaceWindows,
 	gotoLeftSiblingTab,
 	gotoRightSiblingTab,
 	notify,
 } from "./utils/obsidian";
-import { getElectronMainWindow } from "./utils/electron";
-import {
-	DEFAULT_SETTINGS,
-	Settings,
-	WheelTabSwitcherSettingTab,
-} from "./settings";
 
 /**
  * Obsidian plugin that allows switching between tabs using the mouse wheel

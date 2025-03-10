@@ -1,10 +1,10 @@
 import { App } from "obsidian";
+import { dev, unsafeCheckIsDebug } from "./utils/debug";
 import {
 	getAllLeaves,
 	getAllWorkspaceParents,
 	highlight,
 } from "./utils/obsidian";
-import { dev, unsafeCheckIsDebug } from "./utils/debug";
 
 /**
  * Determines if the wheel event occurred within a tab container
