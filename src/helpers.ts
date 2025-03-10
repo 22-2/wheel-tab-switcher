@@ -1,3 +1,4 @@
+import { App } from "obsidian";
 import { getAllLeaves, getAllWorkspaceParents } from "./utils/obsidian";
 
 /**
@@ -19,7 +20,7 @@ export function checkIsWheelInTabContainer(evt: WheelEvent): boolean {
  * @param evt - The wheel event to process
  * @returns The leaf object if found, otherwise null or undefined
  */
-export function findLeafByWheelEvent(evt: WheelEvent) {
+export function findLeafByWheelEvent(evt: WheelEvent, app: App) {
 	// Early return if the wheel event is not in a tab container
 	if (!checkIsWheelInTabContainer(evt)) {
 		return;
