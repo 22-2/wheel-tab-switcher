@@ -5,7 +5,7 @@ import { PLUGIN_ID } from "src/constants";
 export class logger {
 	get dev() {
 		if (unsafeCheckIsDebug()) {
-			return () => {};
+			return () => { };
 		}
 		return global.console.log.bind(console);
 	}
@@ -13,9 +13,10 @@ export class logger {
 
 export const dev = new logger().dev;
 
-export const unsafeCheckIsDebug = () =>
-	// @ts-expect-error
-	app.plugins.plugins[PLUGIN_ID].setting.debug;
+export function unsafeCheckIsDebug() {
+	/* @ts-expect-error */
+	return app.plugins.plugins[PLUGIN_ID].settings.debug;
+}
 
 export async function reloadPlugin(app: App, pluginId: string) {
 	try {
