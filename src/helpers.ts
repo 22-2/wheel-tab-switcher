@@ -60,11 +60,13 @@ export function findLeafByWheelEvent(
 	const wheeledTabContainer = (evt.target as HTMLElement).closest(
 		".workspace-tab-header-container",
 	);
-	// logger.debug("wheeledTabContainer:");
+	logger.debug("wheeledTabContainer.owner:", wheeledTabContainer?.ownerDocument.title);
 
 	if (!wheeledTabContainer) {
 		return void logger.debug("wheeledTabContainer is null, return.");
 	}
+
+	if (plugin.settings.debug) highlightElement(wheeledTabContainer as HTMLElement);
 
 	const wheeledTabHeader =
 		wheeledTabContainer.querySelector(".workspace-tab-header.is-active") ||
@@ -74,6 +76,8 @@ export function findLeafByWheelEvent(
 	if (!wheeledTabHeader) {
 		return void logger.debug("wheeledTabHeader is null, return.");
 	}
+
+	if (plugin.settings.debug) highlightElement(wheeledTabHeader as HTMLElement, "red");
 
 	// Get all workspace parents
 	const wsParents = getAllWorkspaceParents(app);
@@ -109,4 +113,12 @@ export function findLeafByWheelEvent(
 	);
 	logger.debug("foundLeaf:", foundLeaf);
 	return foundLeaf;
+}
+
+function highlightElement(element: HTMLElement, color = 'yellow') {
+	element.style.backgroundColor = color; // ハイライト色に変更
+
+	setTimeout(() => {
+		element.style.backgroundColor = "initial"; // 元の背景色に戻す
+	}, 300); // 300ミリ秒後に戻す（durationはお好みで調整してください）
 }

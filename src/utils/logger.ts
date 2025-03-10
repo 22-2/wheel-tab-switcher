@@ -1,21 +1,23 @@
+import { App } from "obsidian";
+import type WheelTabSwitcher from "src/main";
 import { Settings } from "src/settings";
 
 export class LoggerService {
-	constructor(private settings: Settings) {}
+	constructor(private plugin: WheelTabSwitcher) { }
 
 	info(...args: any) {
-		console.info(...args);
+		global.console.info(...args);
 	}
 
 	warn(...args: any) {
-		if (this.settings.debug) {
-			console.warn(...args);
+		if (this.plugin.settings.debug) {
+			global.console.warn(...args);
 		}
 	}
 
 	debug(...args: any) {
-		if (this.settings.debug) {
-			console.debug(...args);
+		if (this.plugin.settings.debug) {
+			global.console.debug(...args);
 		}
 	}
 }

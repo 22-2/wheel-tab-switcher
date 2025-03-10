@@ -1,5 +1,5 @@
 import { PluginSettingTab, Setting } from "obsidian";
-import WheelTabSwitcher from "./main";
+import type WheelTabSwitcher from "./main";
 
 export class WheelTabSwitcherSettingTab extends PluginSettingTab {
 	constructor(public plugin: WheelTabSwitcher) {

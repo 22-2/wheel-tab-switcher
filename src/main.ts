@@ -1,4 +1,4 @@
-import { Plugin } from "obsidian";
+import { Plugin, WorkspaceWindow } from "obsidian";
 import { findLeafByWheelEvent } from "src/helpers";
 import {
 	DEFAULT_SETTINGS,
@@ -6,13 +6,13 @@ import {
 	WheelTabSwitcherSettingTab,
 } from "./settings";
 import { getElectronMainWindow } from "./utils/electron";
+import { LoggerService } from "./utils/logger";
 import {
 	getAllWorkspaceWindows,
 	gotoLeftSiblingTab,
 	gotoRightSiblingTab,
 	notify,
 } from "./utils/obsidian";
-import { LoggerService } from "./utils/logger";
 
 /**
  * Obsidian plugin that allows switching between tabs using the mouse wheel
@@ -20,23 +20,33 @@ import { LoggerService } from "./utils/logger";
  */
 export default class WheelTabSwitcher extends Plugin {
 	settings: Settings = DEFAULT_SETTINGS;
+
 	logger: LoggerService;
+
 	/**
 	 * Creates a wheel event handler for a specific window
-	 * @param win - The browser window object
+	 * @param wsWin - The browser window object
 	 * @returns A wheel event handler function
 	 */
-	private createWheelHandler(win: Window) {
+	private createWheelHandler(wsWin: WorkspaceWindow) {
 		return (evt: WheelEvent) => {
 			this.logger.debug("called createWheelHandler");
 
 			// Ensure window is focused
-			getElectronMainWindow(win).focus();
+			getElectronMainWindow(wsWin.win).focus();
+			wsWin.win.focus();
+			this.logger.debug("owner", (evt.target as HTMLElement).ownerDocument.title);
+			// this.logger.debug("evt.view", evt.view?.document.title);
+			// this.logger.debug("[ELECTRON_WINDOW]", getElectronMainWindow(wsWin.win).getTitle());
+			// wsWin.win.focus();
+			// this.logger.debug("win.document", wsWin.win.document.title);
+			// this.logger.debug("document", document.title);
+			// this.logger.debug("activeDocument", activeDocument.title);
 
 			// Find the leaf (pane) associated with the wheel event
 			const leaf = findLeafByWheelEvent(this.app, this, evt);
 
-			if (!leaf) return; // console.warn("failed to get leaf");
+			if (!leaf) return; this.logger.debug("failed to get leaf");
 
 			const isUp = evt.deltaY <= 0;
 			if (isUp) {
@@ -51,42 +61,46 @@ export default class WheelTabSwitcher extends Plugin {
 	 * Plugin initialization
 	 */
 	async onload() {
-		this.logger = new LoggerService(this.settings);
+		await this.loadSettings();
+		this.logger = new LoggerService(this);
+		this.logger.debug("WheelTabSwitcher init");
+		this.addSettingTab(new WheelTabSwitcherSettingTab(this));
+		this.app.workspace.onLayoutReady(() => {
 
-		if (window.Capacitor.getPlatform() !== "web") {
-			return void notify("Mobile is not supported");
-		}
-		// Register handler for new windows
-		this.registerEvent(
-			this.app.workspace.on("window-open", (wsWin) => {
+			if (window.Capacitor.getPlatform() !== "web") {
+				return void notify("Mobile is not supported");
+			}
+			// Register handler for new windows
+			this.registerEvent(
+				this.app.workspace.on("window-open", (wsWin) => {
+					this.registerDomEvent(
+						wsWin.win,
+						"wheel",
+						this.createWheelHandler(wsWin),
+					);
+				}),
+			);
+
+			// Register handler for the all windows
+			getAllWorkspaceWindows(this.app).forEach((wsWin) => {
 				this.registerDomEvent(
 					wsWin.win,
 					"wheel",
-					this.createWheelHandler(wsWin.win),
+					this.createWheelHandler(wsWin),
 				);
-			}),
-		);
+			});
 
-		// Register handler for the all windows
-		getAllWorkspaceWindows(this.app).forEach((wsWin) => {
-			this.registerDomEvent(
-				wsWin.win,
-				"wheel",
-				this.createWheelHandler(wsWin.win),
-			);
+			this.logger.debug(getAllWorkspaceWindows(this.app));
+			this.logger.debug("init: wheel tab switcher");
+
 		});
-
-		this.logger.debug("init: wheel tab switcher");
-
-		await this.loadSettings();
-		this.addSettingTab(new WheelTabSwitcherSettingTab(this));
 	}
 
 	async loadSettings() {
-		this.settings = Object.assign({}, await this.loadData(), DEFAULT_SETTINGS);
+		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
 	}
 
-	saveSettings() {
-		return this.saveData(this.settings);
+	saveSettings(settings: Settings = this.settings) {
+		return this.saveData(settings);
 	}
 }
