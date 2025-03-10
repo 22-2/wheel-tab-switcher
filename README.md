@@ -4,11 +4,10 @@ A plugin for [Obsidian](https://obsidian.md) that allows you to switch between t
 
 ## Features
 
-- Switch between tabs by scrolling your mouse wheel when the cursor is over a tab header
-- Scroll up to move to the tab on the left
-- Scroll down to move to the tab on the right
-- Automatically wraps around from the last tab to the first and vice versa
-- Works across all Obsidian windows, including popout windows
+- Switch tabs with mouse wheel on tab headers.
+- Scroll up: previous tab, Scroll down: next tab.
+- Loop around at tab ends.
+- Works in all Obsidian windows.
 
 ## Demo
 
