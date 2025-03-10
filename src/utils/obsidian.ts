@@ -71,7 +71,7 @@ export function gotoRightTab(app: App, leaf: WorkspaceLeaf) {
 	if (!leaf) return;
 
 	const leaves = getAllLeaves(app).filter(
-		(l) => l.parentSplit === leaf.parentSplit
+		(l) => l.parentSplit === leaf.parentSplit,
 	);
 	const index = leaves.indexOf(leaf);
 
@@ -97,7 +97,7 @@ export function gotoLeftTab(app: App, leaf: WorkspaceLeaf) {
 	if (!leaf) return;
 
 	const leaves = getAllLeaves(app).filter(
-		(l) => l.parentSplit === leaf.parentSplit
+		(l) => l.parentSplit === leaf.parentSplit,
 	);
 	const index = leaves.indexOf(leaf);
 
@@ -122,7 +122,7 @@ export function gotoLeftTab(app: App, leaf: WorkspaceLeaf) {
  */
 export function notify(
 	text: string | DocumentFragment,
-	timeoutMs?: number
+	timeoutMs?: number,
 ): Notice {
 	return new Notice(text, timeoutMs ?? undefined);
 }

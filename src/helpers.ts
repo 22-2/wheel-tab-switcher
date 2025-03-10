@@ -11,7 +11,7 @@ export function checkIsWheelInTabContainer(evt: WheelEvent): boolean {
 	if (!el) return false;
 
 	return Boolean(
-		el.closest(".workspace-tab-header") || el.find(".workspace-tab-header")
+		el.closest(".workspace-tab-header") || el.find(".workspace-tab-header"),
 	);
 }
 
@@ -38,20 +38,18 @@ export function findLeafByWheelEvent(evt: WheelEvent, app: App) {
 
 	// Find the leaf that matches the active tab header
 	const wheeledLeaf = getAllLeaves(app).find((leaf) =>
-		leaf.tabHeaderEl.isEqualNode(wheeledTabHeader)
+		leaf.tabHeaderEl.isEqualNode(wheeledTabHeader),
 	);
 
 	if (!wheeledLeaf) return;
 
 	// Find the parent container that contains the active tab header
 	const wheeledParent = wsParents.find((split) =>
-		split.containerEl.contains(wheeledTabHeader)
+		split.containerEl.contains(wheeledTabHeader),
 	);
 
 	if (!wheeledParent) return;
 
 	// Find the leaf in the parent container that matches the wheeled leaf
-	return wheeledParent.children.find(
-		(leaf) => leaf.id === wheeledLeaf.id
-	);;
+	return wheeledParent.children.find((leaf) => leaf.id === wheeledLeaf.id);
 }

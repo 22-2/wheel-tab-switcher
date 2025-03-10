@@ -2,7 +2,12 @@ import { Plugin } from "obsidian";
 import { findLeafByWheelEvent } from "src/helpers";
 import { getElectronMainWindow } from "./utils/electron";
 import { dev } from "./utils/logger";
-import { getAllWorkspaceWindows, gotoLeftTab, gotoRightTab, notify } from "./utils/obsidian";
+import {
+	getAllWorkspaceWindows,
+	gotoLeftTab,
+	gotoRightTab,
+	notify,
+} from "./utils/obsidian";
 
 /**
  * Obsidian plugin that allows switching between tabs using the mouse wheel
@@ -41,7 +46,6 @@ export default class WheelTabSwitcher extends Plugin {
 	 * Plugin initialization
 	 */
 	onload() {
-
 		if (window.Capacitor.getPlatform() !== "web") {
 			return void notify("Mobile is not supported");
 		}
@@ -49,8 +53,12 @@ export default class WheelTabSwitcher extends Plugin {
 		// Register handler for new windows
 		this.registerEvent(
 			this.app.workspace.on("window-open", (wsWin) => {
-				this.registerDomEvent(wsWin.win, "wheel", this.createWheelHandler(wsWin.win));
-			})
+				this.registerDomEvent(
+					wsWin.win,
+					"wheel",
+					this.createWheelHandler(wsWin.win),
+				);
+			}),
 		);
 
 		// Register handler for the all windows

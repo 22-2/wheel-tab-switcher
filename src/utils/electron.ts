@@ -9,4 +9,3 @@ export function getElectronMainWindow(rendererWin: Window): ElectronWindow {
 	// @ts-expect-error
 	return rendererWin.electronWindow;
 }
-
