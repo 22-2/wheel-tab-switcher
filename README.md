@@ -9,7 +9,6 @@ A plugin for [Obsidian](https://obsidian.md) that allows you to switch between t
 - Scroll down to move to the tab on the right
 - Automatically wraps around from the last tab to the first and vice versa
 - Works across all Obsidian windows, including popout windows
-- Automatically restores minimized windows when switching tabs
 
 ## Demo
 
