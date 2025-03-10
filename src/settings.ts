@@ -18,6 +18,11 @@ export class WheelTabSwitcherSettingTab extends PluginSettingTab {
 		});
 	}
 }
+
 export interface Settings {
 	debug: boolean;
 }
+
+export const DEFAULT_SETTINGS: Settings = {
+	debug: false,
+};

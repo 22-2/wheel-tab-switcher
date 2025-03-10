@@ -8,14 +8,18 @@ import {
 	notify,
 } from "./utils/obsidian";
 import { getElectronMainWindow } from "./utils/electron";
-import { Settings, WheelTabSwitcherSettingTab } from "./settings";
+import {
+	DEFAULT_SETTINGS,
+	Settings,
+	WheelTabSwitcherSettingTab,
+} from "./settings";
 
 /**
  * Obsidian plugin that allows switching between tabs using the mouse wheel
  * when hovering over tab headers
  */
 export default class WheelTabSwitcher extends Plugin {
-	settings: Settings;
+	settings: Settings = DEFAULT_SETTINGS;
 	/**
 	 * Creates a wheel event handler for a specific window
 	 * @param win - The browser window object
@@ -43,10 +47,13 @@ export default class WheelTabSwitcher extends Plugin {
 	/**
 	 * Plugin initialization
 	 */
-	onload() {
+	async onload() {
 		if (window.Capacitor.getPlatform() !== "web") {
 			return void notify("Mobile is not supported");
 		}
+
+		await this.loadSettings();
+		this.addSettingTab(new WheelTabSwitcherSettingTab(this));
 
 		// Register handler for new windows
 		this.registerEvent(
@@ -68,9 +75,11 @@ export default class WheelTabSwitcher extends Plugin {
 			);
 		});
 
-		this.addSettingTab(new WheelTabSwitcherSettingTab(this));
-
 		dev("init: wheel tab switcher");
+	}
+
+	async loadSettings() {
+		this.settings = Object.assign({}, await this.loadData(), DEFAULT_SETTINGS);
 	}
 	saveSettings() {
 		this.saveData(this.settings);
