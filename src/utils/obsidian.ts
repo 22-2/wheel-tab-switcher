@@ -51,14 +51,6 @@ export function getAllWorkspaceWindows(app: App): WorkspaceWindow[] {
 }
 
 /**
- * Gets all workspace parent splits
- * @returns An array of all workspace parent containers
- */
-export function getAllWorkspaceParents(app: App): WorkspaceParent[] {
-	return getWorkspaceItems<WorkspaceParent>(app, (leaf) => leaf.parentSplit);
-}
-
-/**
  * Focuses a specific leaf and handles special views
  * @param app - Obsidian app
  * @param leaf - The leaf to focus
