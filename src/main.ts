@@ -3,8 +3,8 @@ import { findLeafByWheelEvent } from "src/helpers";
 import { dev } from "./utils/logger";
 import {
 	getAllWorkspaceWindows,
-	gotoLeftTab,
-	gotoRightTab,
+	gotoLeftSiblingTab,
+	gotoRightSiblingTab,
 	notify,
 } from "./utils/obsidian";
 
@@ -30,9 +30,9 @@ export default class WheelTabSwitcher extends Plugin {
 
 			const isUp = evt.deltaY <= 0;
 			if (isUp) {
-				gotoLeftTab(this.app, leaf);
+				gotoLeftSiblingTab(this.app, leaf);
 			} else {
-				gotoRightTab(this.app, leaf);
+				gotoRightSiblingTab(this.app, leaf);
 			}
 		};
 	}

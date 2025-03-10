@@ -66,29 +66,42 @@ function focusLeaf(app: App, leaf: WorkspaceLeaf) {
 }
 
 /**
- * Navigates to the tab to the right of the current tab
+ * Navigates to the sibling tab in the specified direction.
  * @param app - The Obsidian app instance
- * @param leaf - The reference leaf
+ * @param argLeaf - The reference leaf
+ * @param direction - 1 for right, -1 for left
  */
-export function gotoRightTab(app: App, leaf: WorkspaceLeaf) {
-	if (!leaf) return;
-
-	const leaves = getAllLeaves(app).filter(
-		(l) => l.parentSplit === leaf.parentSplit,
+function gotoSiblingTab(app: App, argLeaf: WorkspaceLeaf, direction: 1 | -1) {
+	const siblingLeaves = getAllLeaves(app).filter(
+		(leaf) => leaf.parentSplit === argLeaf.parentSplit,
 	);
-	const index = leaves.indexOf(leaf);
+	const index = siblingLeaves.findIndex((leaf) => leaf.id === argLeaf.id);
 
 	if (index === -1) {
-		console.error("failed to find tab. leaf:", leaf);
-		return;
+		throw new Error("failed to find tab. leaf:" + argLeaf.id);
 	}
 
-	// Wrap around to the first tab if at the end
-	if (index === leaves.length - 1) {
-		focusLeaf(app, leaves[0]);
-	} else {
-		focusLeaf(app, leaves[index + 1]);
+	const nextIndex = index + direction;
+	let targetIndex = nextIndex;
+
+	if (nextIndex < 0) {
+		// Wrap around to the last tab if at the beginning (for left)
+		targetIndex = siblingLeaves.length - 1;
+	} else if (nextIndex >= siblingLeaves.length) {
+		// Wrap around to the first tab if at the end (for right)
+		targetIndex = 0;
 	}
+
+	focusLeaf(app, siblingLeaves[targetIndex]);
+}
+
+/**
+ * Navigates to the tab to the right of the current tab
+ * @param app - The Obsidian app instance
+ * @param argLeaf - The reference leaf
+ */
+export function gotoRightSiblingTab(app: App, argLeaf: WorkspaceLeaf) {
+	gotoSiblingTab(app, argLeaf, 1);
 }
 
 /**
@@ -96,25 +109,8 @@ export function gotoRightTab(app: App, leaf: WorkspaceLeaf) {
  * @param app - The Obsidian app instance
  * @param leaf - The reference leaf
  */
-export function gotoLeftTab(app: App, leaf: WorkspaceLeaf) {
-	if (!leaf) return;
-
-	const leaves = getAllLeaves(app).filter(
-		(l) => l.parentSplit === leaf.parentSplit,
-	);
-	const index = leaves.indexOf(leaf);
-
-	if (index === -1) {
-		console.error("failed to find tab. leaf:", leaf);
-		return;
-	}
-
-	// Wrap around to the last tab if at the beginning
-	if (index === 0) {
-		focusLeaf(app, leaves[leaves.length - 1]);
-	} else {
-		focusLeaf(app, leaves[index - 1]);
-	}
+export function gotoLeftSiblingTab(app: App, argLeaf: WorkspaceLeaf) {
+	gotoSiblingTab(app, argLeaf, -1);
 }
 
 /**
