@@ -1,10 +1,10 @@
 import { App } from "obsidian";
-import { dev, unsafeCheckIsDebug } from "./utils/debug";
 import {
 	getAllLeaves,
 	getAllWorkspaceParents,
 	highlight,
 } from "./utils/obsidian";
+import type WheelTabSwitcher from "./main";
 
 /**
  * Determines if the wheel event occurred within a tab container
@@ -40,49 +40,50 @@ export function checkIsWheelInTabContainer(evt: WheelEvent): boolean {
  * By performing these checks, the function avoids ambiguity and ensures the correct leaf is identified,
  * thus preventing erratic focus behavior and providing a smooth and predictable user interaction when using the mouse wheel on tab headers.
  */
-export function findLeafByWheelEvent(app: App, evt: WheelEvent) {
-	dev("findLeafByWheelEvent started", evt);
+export function findLeafByWheelEvent(app: App, plugin: WheelTabSwitcher, evt: WheelEvent) {
+	const logger = plugin.logger;
+	logger.debug("findLeafByWheelEvent started", evt);
 
 	// Early return if the wheel event is not in a tab container
 	if (!checkIsWheelInTabContainer(evt)) {
-		return dev("Wheel event is not in a tab container, early return.");
+		return void logger.debug("Wheel event is not in a tab container, early return.");
 	}
-	dev("Wheel event is in a tab container.");
+	logger.debug("Wheel event is in a tab container.");
 
 	// First, search from the tab container
 	const wheeledTabContainer = (evt.target as HTMLElement).closest(
 		".workspace-tab-header-container",
 	);
-	dev("wheeledTabContainer:", wheeledTabContainer);
+	logger.debug("wheeledTabContainer:", wheeledTabContainer);
 
 	if (!wheeledTabContainer) {
-		return dev("wheeledTabContainer is null, return.");
+		return void logger.debug("wheeledTabContainer is null, return.");
 	}
 
 	const wheeledTabHeader =
 		wheeledTabContainer.querySelector(".workspace-tab-header.is-active") ||
 		wheeledTabContainer.querySelector(".workspace-tab-header");
-	dev("wheeledTabHeader:", wheeledTabHeader);
+	logger.debug("wheeledTabHeader:", wheeledTabHeader);
 
 	if (!wheeledTabHeader) {
-		return dev("wheeledTabHeader is null, return.");
+		return void logger.debug("wheeledTabHeader is null, return.");
 	}
 
 	// Get all workspace parents
 	const wsParents = getAllWorkspaceParents(app);
-	dev("wsParents:", wsParents);
+	logger.debug("wsParents:", wsParents);
 
 	// Find the leaf that matches the active tab header
 	const wheeledLeaf = getAllLeaves(app).find((leaf) =>
 		leaf.tabHeaderEl.isEqualNode(wheeledTabHeader),
 	);
-	dev("wheeledLeaf:", wheeledLeaf);
+	logger.debug("wheeledLeaf:", wheeledLeaf);
 
 	if (!wheeledLeaf) {
-		return dev("wheeledLeaf is null, return.");
+		return void logger.warn("wheeledLeaf is null, return.");
 	}
 
-	if (unsafeCheckIsDebug()) {
+	if (plugin.settings.debug) {
 		highlight(wheeledLeaf);
 	}
 
@@ -90,16 +91,16 @@ export function findLeafByWheelEvent(app: App, evt: WheelEvent) {
 	const wheeledParent = wsParents.find((split) =>
 		split.containerEl.contains(wheeledTabHeader),
 	);
-	dev("wheeledParent:", wheeledParent);
+	logger.debug("wheeledParent:", wheeledParent);
 
 	if (!wheeledParent) {
-		return dev("wheeledParent is null, return.");
+		return void logger.warn("wheeledParent is null, return.");
 	}
 
 	// Find the leaf in the parent container that matches the wheeled leaf
 	const foundLeaf = wheeledParent.children.find(
 		(leaf) => leaf.id === wheeledLeaf.id,
 	);
-	dev("foundLeaf:", foundLeaf);
+	logger.debug("foundLeaf:", foundLeaf);
 	return foundLeaf;
 }
