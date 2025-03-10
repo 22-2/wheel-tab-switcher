@@ -6,6 +6,20 @@ import {
 	App,
 } from "obsidian";
 
+function getWorkspaceItems<T extends WorkspaceWindow | WorkspaceParent>(
+	app: App,
+	getItem: (leaf: WorkspaceLeaf) => T | null | undefined,
+): T[] {
+	const itemMap = new Map<string, T>();
+	getAllLeaves(app).forEach((leaf) => {
+		const item = getItem(leaf);
+		if (item && item.id) { // item が nullish でないことを確認し、id プロパティの存在をチェック
+			itemMap.set(item.id, item);
+		}
+	});
+	return Array.from(itemMap.values()) as T[];
+}
+
 /**
  * Gets all active workspace leaves (panes)
  * @param app - Obsidian app
@@ -25,13 +39,7 @@ export function getAllLeaves(app: App): WorkspaceLeaf[] {
  * @returns An array of all workspace windows
  */
 export function getAllWorkspaceWindows(app: App): WorkspaceWindow[] {
-	const windowMap = new Map();
-	getAllLeaves(app).forEach((leaf) => {
-		const container = leaf.getContainer();
-		// Overwrite if ID already exists
-		windowMap.set(container.id, container);
-	});
-	return Array.from(windowMap.values()) as WorkspaceWindow[];
+	return getWorkspaceItems<WorkspaceWindow>(app, (leaf) => leaf.getContainer());
 }
 
 /**
@@ -39,13 +47,7 @@ export function getAllWorkspaceWindows(app: App): WorkspaceWindow[] {
  * @returns An array of all workspace parent containers
  */
 export function getAllWorkspaceParents(app: App): WorkspaceParent[] {
-	const windowMap = new Map();
-	getAllLeaves(app).forEach((leaf) => {
-		const container = leaf.parentSplit!;
-		// Overwrite if ID already exists
-		windowMap.set(container.id, container);
-	});
-	return Array.from(windowMap.values()) as WorkspaceParent[];
+	return getWorkspaceItems<WorkspaceParent>(app, (leaf) => leaf.parentSplit);
 }
 
 /**
