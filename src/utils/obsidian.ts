@@ -72,9 +72,9 @@ function focusLeaf(app: App, leaf: WorkspaceLeaf) {
  * @param direction - 1 for right, -1 for left
  */
 function gotoSiblingTab(app: App, argLeaf: WorkspaceLeaf, direction: 1 | -1) {
-	const siblingLeaves = getAllLeaves(app).filter(
-		(leaf) => leaf.parentSplit === argLeaf.parentSplit,
-	);
+	const siblingLeaves = argLeaf.parentSplit?.children;
+	if (!siblingLeaves) return;
+
 	const index = siblingLeaves.findIndex((leaf) => leaf.id === argLeaf.id);
 
 	if (index === -1) {
