@@ -77,3 +77,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 - The Obsidian team for their amazing app and plugin API
 - The Obsidian community for their support and feedback
+- Claude and Gemini for their AI-powered help with code commenting, refactoring, and commit messages.
