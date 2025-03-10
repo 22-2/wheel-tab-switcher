@@ -81,7 +81,8 @@ export default class WheelTabSwitcher extends Plugin {
 	async loadSettings() {
 		this.settings = Object.assign({}, await this.loadData(), DEFAULT_SETTINGS);
 	}
+
 	saveSettings() {
-		this.saveData(this.settings);
+		return this.saveData(this.settings);
 	}
 }
