@@ -17,7 +17,7 @@ export default class WheelTabSwitcher extends Plugin {
 	 */
 	private createWheelHandler(win: Window) {
 		return (evt: WheelEvent) => {
-			// Restore window if minimized
+			// Ensure window is focused
 			win.focus();
 
 			// Find the leaf (pane) associated with the wheel event
