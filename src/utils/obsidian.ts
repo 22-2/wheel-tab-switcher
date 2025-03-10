@@ -8,6 +8,7 @@ import {
 
 /**
  * Gets all active workspace leaves (panes)
+ * @param app - Obsidian app
  * @returns An array of all workspace leaves
  */
 export function getAllLeaves(app: App): WorkspaceLeaf[] {
@@ -20,6 +21,7 @@ export function getAllLeaves(app: App): WorkspaceLeaf[] {
 
 /**
  * Gets all workspace windows
+ * @param app - Obsidian app
  * @returns An array of all workspace windows
  */
 export function getAllWorkspaceWindows(app: App): WorkspaceWindow[] {
@@ -48,6 +50,7 @@ export function getAllWorkspaceParents(app: App): WorkspaceParent[] {
 
 /**
  * Focuses a specific leaf and handles special views
+ * @param app - Obsidian app
  * @param leaf - The leaf to focus
  */
 function focusLeaf(app: App, leaf: WorkspaceLeaf) {
@@ -129,6 +132,7 @@ export function notify(
 
 /**
  * Gets the currently active leaf
+ * @param app - Obsidian app
  * @returns The active workspace leaf
  */
 export function getActiveLeaf(app: App) {
