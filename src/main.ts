@@ -1,6 +1,6 @@
-import { Plugin, WorkspaceWindow } from "obsidian";
+import { Plugin } from "obsidian";
 import { findLeafByWheelEvent } from "src/helper";
-import { getMainWindow, restoreMainWinIfMinimized } from "./utils/electron";
+import { getMainWindow } from "./utils/electron";
 import { dev } from "./utils/logger";
 import { gotoLeftTab, gotoRightTab, notify } from "./utils/obsidian";
 
@@ -15,7 +15,7 @@ export default class WheelTabSwitcher extends Plugin {
 	 * @param wsWin - The Obsidian workspace window
 	 * @returns A wheel event handler function
 	 */
-	private createWheelHandler(win: Window, wsWin: WorkspaceWindow) {
+	private createWheelHandler(win: Window) {
 		return (evt: WheelEvent) => {
 			const currentMainWin = getMainWindow(win);
 
@@ -24,7 +24,7 @@ export default class WheelTabSwitcher extends Plugin {
 			}
 
 			// Restore window if minimized
-			restoreMainWinIfMinimized(currentMainWin);
+			win.focus();
 
 			// Find the leaf (pane) associated with the wheel event
 			const leaf = findLeafByWheelEvent(evt);
@@ -54,21 +54,8 @@ export default class WheelTabSwitcher extends Plugin {
 
 		// Register handler for new windows
 		this.registerEvent(
-			this.app.workspace.on("window-open", (win) => {
-				win.win.addEventListener(
-					"wheel",
-					this.createWheelHandler(win.win, win)
-				);
-			})
-		);
-
-		// Clean up handlers when windows close
-		this.registerEvent(
-			this.app.workspace.on("window-close", (win) => {
-				win.win.removeEventListener(
-					"wheel",
-					this.createWheelHandler(win.win, win)
-				);
+			this.app.workspace.on("window-open", (wsWin) => {
+				this.registerDomEvent(wsWin.win, "wheel", this.createWheelHandler(wsWin.win));
 			})
 		);
 
@@ -76,7 +63,7 @@ export default class WheelTabSwitcher extends Plugin {
 		this.registerDomEvent(
 			window,
 			"wheel",
-			this.createWheelHandler(window, this.app.workspace.rootSplit)
+			this.createWheelHandler(window)
 		);
 
 		dev("init: wheel tab switcher");
