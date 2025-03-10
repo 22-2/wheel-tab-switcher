@@ -1,5 +1,5 @@
 import { App } from "obsidian";
-import { getAllLeaves } from "./utils/obsidian";
+import { getAllLeaves, getAllWorkspaceParents } from "./utils/obsidian";
 
 /**
  * Determines if the wheel event occurred within a tab container
@@ -28,17 +28,29 @@ export function findLeafByWheelEvent(app: App, evt: WheelEvent) {
 	}
 
 	// First, search from the tab container
-	const wheeledTabHeaderContainer = (evt.target as HTMLElement).closest(".workspace-tab-header-container");
-	if (!wheeledTabHeaderContainer) return;
+	const wheeledTabHeader = (evt.target as HTMLElement)
+		.closest(".workspace-tab-header-container")
+		?.find(".workspace-tab-header.is-active");
 
-	const wheeledTabHeader = wheeledTabHeaderContainer.find(".workspace-tab-header.is-active");
 	if (!wheeledTabHeader) return;
+
+	// Get all workspace parents
+	const wsParents = getAllWorkspaceParents(app);
 
 	// Find the leaf that matches the active tab header
 	const wheeledLeaf = getAllLeaves(app).find((leaf) =>
 		leaf.tabHeaderEl.isEqualNode(wheeledTabHeader),
 	);
+
 	if (!wheeledLeaf) return;
 
-	return wheeledLeaf;
+	// Find the parent container that contains the active tab header
+	const wheeledParent = wsParents.find((split) =>
+		split.containerEl.contains(wheeledTabHeader),
+	);
+
+	if (!wheeledParent) return;
+
+	// Find the leaf in the parent container that matches the wheeled leaf
+	return wheeledParent.children.find((leaf) => leaf.id === wheeledLeaf.id);
 }
