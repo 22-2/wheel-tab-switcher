@@ -29,15 +29,12 @@ export default class WheelTabSwitcher extends Plugin {
 
 			if (!leaf) return; // console.warn("failed to get leaf");
 
-			// Slight delay to ensure UI is ready for tab switching
-			setTimeout(() => {
-				const isUp = evt.deltaY <= 0;
-				if (isUp) {
-					gotoLeftTab(this.app, leaf);
-				} else {
-					gotoRightTab(this.app, leaf);
-				}
-			});
+			const isUp = evt.deltaY <= 0;
+			if (isUp) {
+				gotoLeftTab(this.app, leaf);
+			} else {
+				gotoRightTab(this.app, leaf);
+			}
 		};
 	}
 
