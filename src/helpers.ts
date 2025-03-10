@@ -49,10 +49,8 @@ export function findLeafByWheelEvent(evt: WheelEvent) {
 
 	if (!activeParent) return null;
 
-	// Find the next leaf in the parent container that matches the wheeled leaf
-	const nextLeaf = activeParent.children.find(
+	// Find the leaf in the parent container that matches the wheeled leaf
+	return activeParent.children.find(
 		(leaf) => leaf.id === wheeledLeaf.id
-	);
-
-	return nextLeaf;
+	);;
 }
