@@ -43,14 +43,14 @@ export function findLeafByWheelEvent(evt: WheelEvent) {
 	if (!wheeledLeaf) return;
 
 	// Find the parent container that contains the active tab header
-	const activeParent = wsParents.find((split) =>
+	const wheeledParent = wsParents.find((split) =>
 		split.containerEl.contains(wheeledTabHeader)
 	);
 
-	if (!activeParent) return null;
+	if (!wheeledParent) return;
 
 	// Find the leaf in the parent container that matches the wheeled leaf
-	return activeParent.children.find(
+	return wheeledParent.children.find(
 		(leaf) => leaf.id === wheeledLeaf.id
 	);;
 }
