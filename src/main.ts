@@ -1,6 +1,6 @@
 import { Plugin, WorkspaceWindow } from "obsidian";
 import { findLeafByWheelEvent } from "src/helper";
-import { getMainWindow, restoreMainWinIfMinimized } from "./utils/electron";
+import { getElectronMainWindow, restoreMainWinIfMinimized } from "./utils/electron";
 import { dev } from "./utils/logger";
 import { gotoLeftTab, gotoRightTab, notify } from "./utils/obsidian";
 
@@ -12,19 +12,18 @@ export default class WheelTabSwitcher extends Plugin {
 	/**
 	 * Creates a wheel event handler for a specific window
 	 * @param win - The browser window object
-	 * @param wsWin - The Obsidian workspace window
 	 * @returns A wheel event handler function
 	 */
-	private createWheelHandler(win: Window, wsWin: WorkspaceWindow) {
+	private createWheelHandler(win: Window) {
 		return (evt: WheelEvent) => {
-			const currentMainWin = getMainWindow(win);
+			const currentMainWin = getElectronMainWindow(win);
 
 			if (!currentMainWin) {
 				return void notify("failed to find app window");
 			}
 
-			// Restore window if minimized
-			restoreMainWinIfMinimized(currentMainWin);
+			// Restore window if background
+			currentMainWin.focus();
 
 			// Find the leaf (pane) associated with the wheel event
 			const leaf = findLeafByWheelEvent(evt);
