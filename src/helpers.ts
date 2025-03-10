@@ -33,7 +33,7 @@ export function findLeafByWheelEvent(evt: WheelEvent, app: App) {
 
 	if (!wheeledTabHeader) return;
 
-	// Get all workspace elements
+	// Get all workspace parents
 	const wsParents = getAllWorkspaceParents(app);
 
 	// Find the leaf that matches the active tab header
