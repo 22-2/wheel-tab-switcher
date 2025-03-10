@@ -12,9 +12,7 @@ import {
 	gotoRightSiblingTab,
 	notify,
 } from "./utils/obsidian";
-import { Logger, } from "tslog";
-import { LogLevel } from "./constants";
-
+import { LoggerService } from "./utils/logger";
 
 /**
  * Obsidian plugin that allows switching between tabs using the mouse wheel
@@ -22,7 +20,7 @@ import { LogLevel } from "./constants";
  */
 export default class WheelTabSwitcher extends Plugin {
 	settings: Settings = DEFAULT_SETTINGS;
-	logger: Logger<unknown>;
+	logger: LoggerService;
 	/**
 	 * Creates a wheel event handler for a specific window
 	 * @param win - The browser window object
@@ -30,6 +28,8 @@ export default class WheelTabSwitcher extends Plugin {
 	 */
 	private createWheelHandler(win: Window) {
 		return (evt: WheelEvent) => {
+			this.logger.debug("called createWheelHandler");
+
 			// Ensure window is focused
 			getElectronMainWindow(win).focus();
 
@@ -51,15 +51,11 @@ export default class WheelTabSwitcher extends Plugin {
 	 * Plugin initialization
 	 */
 	async onload() {
-		this.logger = new Logger({ minLevel: this.settings.debug ? LogLevel.Error : LogLevel.Debug });
+		this.logger = new LoggerService(this.settings);
 
 		if (window.Capacitor.getPlatform() !== "web") {
 			return void notify("Mobile is not supported");
 		}
-
-		await this.loadSettings();
-		this.addSettingTab(new WheelTabSwitcherSettingTab(this));
-
 		// Register handler for new windows
 		this.registerEvent(
 			this.app.workspace.on("window-open", (wsWin) => {
@@ -81,6 +77,9 @@ export default class WheelTabSwitcher extends Plugin {
 		});
 
 		this.logger.debug("init: wheel tab switcher");
+
+		await this.loadSettings();
+		this.addSettingTab(new WheelTabSwitcherSettingTab(this));
 	}
 
 	async loadSettings() {

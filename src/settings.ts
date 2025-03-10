@@ -8,16 +8,12 @@ export class WheelTabSwitcherSettingTab extends PluginSettingTab {
 
 	display(): void {
 		this.containerEl.empty();
-		new Setting(this.containerEl)
-			.setName("debug")
-			.addToggle((toggle) => {
-				toggle
-					.setValue(this.plugin.settings.debug)
-					.onChange(async (val) => {
-						this.plugin.settings.debug = val;
-						await this.plugin.saveSettings();
-					});
+		new Setting(this.containerEl).setName("debug").addToggle((toggle) => {
+			toggle.setValue(this.plugin.settings.debug).onChange(async (val) => {
+				this.plugin.settings.debug = val;
+				await this.plugin.saveSettings();
 			});
+		});
 	}
 }
 
