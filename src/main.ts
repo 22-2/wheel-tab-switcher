@@ -17,12 +17,6 @@ export default class WheelTabSwitcher extends Plugin {
 	 */
 	private createWheelHandler(win: Window) {
 		return (evt: WheelEvent) => {
-			const currentMainWin = getElectronMainWindow(win);
-
-			if (!currentMainWin) {
-				return void notify("failed to find app window");
-			}
-
 			// Restore window if minimized
 			win.focus();
 
