@@ -18,6 +18,7 @@ export function checkIsWheelInTabContainer(evt: WheelEvent): boolean {
 /**
  * Finds the leaf (pane) associated with a wheel event on tab headers
  * @param evt - The wheel event to process
+ * @param app - Obsidian app
  * @returns The leaf object if found, otherwise null or undefined
  */
 export function findLeafByWheelEvent(evt: WheelEvent, app: App) {
