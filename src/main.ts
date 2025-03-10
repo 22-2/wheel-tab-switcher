@@ -1,5 +1,5 @@
 import { Plugin } from "obsidian";
-import { findLeafByWheelEvent } from "src/helper";
+import { findLeafByWheelEvent } from "src/helpers";
 import { getElectronMainWindow } from "./utils/electron";
 import { dev } from "./utils/logger";
 import { getAllWorkspaceWindows, gotoLeftTab, gotoRightTab, notify } from "./utils/obsidian";
