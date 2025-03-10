@@ -20,6 +20,20 @@ export function checkIsWheelInTabContainer(evt: WheelEvent): boolean {
  * @param evt - The wheel event to process
  * @param app - Obsidian app
  * @returns The leaf object if found, otherwise null or undefined
+ *
+ * **This meticulous approach is essential to prevent unexpected tab focus jumps.**
+ * **Without this careful method to identify the correct leaf associated with the wheel event on tab headers,**
+ * **the focus might suddenly shift to a different, unintended tab, causing a jarring user experience.**
+ *
+ * This function carefully navigates the DOM structure to accurately pinpoint the target leaf by:
+ * 1. Verifying the wheel event originates within a tab container.
+ * 2. Locating the active tab header element that was wheeled on.
+ * 3. Traversing the workspace hierarchy to find relevant parent containers.
+ * 4. Matching the active tab header to its corresponding leaf element.
+ * 5. Ensuring the found leaf belongs to the correct workspace container.
+ *
+ * By performing these checks, the function avoids ambiguity and ensures the correct leaf is identified,
+ * thus preventing erratic focus behavior and providing a smooth and predictable user interaction when using the mouse wheel on tab headers.
  */
 export function findLeafByWheelEvent(app: App, evt: WheelEvent) {
 	// Early return if the wheel event is not in a tab container
