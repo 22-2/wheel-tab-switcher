@@ -1,6 +1,6 @@
 import { Plugin, WorkspaceWindow } from "obsidian";
 import { findLeafByWheelEvent } from "src/helper";
-import { getElectronMainWindow, restoreMainWinIfMinimized } from "./utils/electron";
+import { getMainWindow, restoreMainWinIfMinimized } from "./utils/electron";
 import { dev } from "./utils/logger";
 import { gotoLeftTab, gotoRightTab, notify } from "./utils/obsidian";
 
@@ -12,31 +12,32 @@ export default class WheelTabSwitcher extends Plugin {
 	/**
 	 * Creates a wheel event handler for a specific window
 	 * @param win - The browser window object
+	 * @param wsWin - The Obsidian workspace window
 	 * @returns A wheel event handler function
 	 */
-	private createWheelHandler(win: Window) {
+	private createWheelHandler(win: Window, wsWin: WorkspaceWindow) {
 		return (evt: WheelEvent) => {
-			const currentMainWin = getElectronMainWindow(win);
+			const currentMainWin = getMainWindow(win);
 
 			if (!currentMainWin) {
 				return void notify("failed to find app window");
 			}
 
-			// Restore window if background
-			currentMainWin.focus();
+			// Restore window if minimized
+			restoreMainWinIfMinimized(currentMainWin);
 
 			// Find the leaf (pane) associated with the wheel event
 			const leaf = findLeafByWheelEvent(evt);
 
-			if (!leaf) return console.warn("failed to get leaf");
+			if (!leaf) return; // console.warn("failed to get leaf");
 
 			// Slight delay to ensure UI is ready for tab switching
 			setTimeout(() => {
 				const isUp = evt.deltaY <= 0;
 				if (isUp) {
-					gotoLeftTab(leaf);
+					gotoLeftTab(this.app, leaf);
 				} else {
-					gotoRightTab(leaf);
+					gotoRightTab(this.app, leaf);
 				}
 			});
 		};
@@ -46,6 +47,11 @@ export default class WheelTabSwitcher extends Plugin {
 	 * Plugin initialization
 	 */
 	onload() {
+
+		if (window.Capacitor.getPlatform() !== "web") {
+			return void notify("Mobile is not supported");
+		}
+
 		// Register handler for new windows
 		this.registerEvent(
 			this.app.workspace.on("window-open", (win) => {

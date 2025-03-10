@@ -33,10 +33,10 @@ export function findLeafByWheelEvent(evt: WheelEvent) {
 	if (!wheeledTabHeader) return;
 
 	// Get all workspace elements
-	const wsParents = getAllWorkspaceParents();
+	const wsParents = getAllWorkspaceParents(app);
 
 	// Find the leaf that matches the active tab header
-	const wheeledLeaf = getAllLeaves().find((leaf) =>
+	const wheeledLeaf = getAllLeaves(app).find((leaf) =>
 		leaf.tabHeaderEl.isEqualNode(wheeledTabHeader)
 	);
 

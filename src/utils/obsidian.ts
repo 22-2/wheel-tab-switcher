@@ -3,13 +3,14 @@ import {
 	WorkspaceParent,
 	WorkspaceLeaf,
 	Notice,
+	App,
 } from "obsidian";
 
 /**
  * Gets all active workspace leaves (panes)
  * @returns An array of all workspace leaves
  */
-export function getAllLeaves(): WorkspaceLeaf[] {
+export function getAllLeaves(app: App): WorkspaceLeaf[] {
 	const leaves: WorkspaceLeaf[] = [];
 	app.workspace.iterateAllLeaves((leaf: WorkspaceLeaf) => {
 		leaves.push(leaf);
@@ -21,9 +22,9 @@ export function getAllLeaves(): WorkspaceLeaf[] {
  * Gets all workspace windows
  * @returns An array of all workspace windows
  */
-export function getAllWorkspaceWindows(): WorkspaceWindow[] {
+export function getAllWorkspaceWindows(app: App): WorkspaceWindow[] {
 	const windowMap = new Map();
-	getAllLeaves().forEach((leaf) => {
+	getAllLeaves(app).forEach((leaf) => {
 		const container = leaf.getContainer();
 		// Overwrite if ID already exists
 		windowMap.set(container.id, container);
@@ -35,9 +36,9 @@ export function getAllWorkspaceWindows(): WorkspaceWindow[] {
  * Gets all workspace parent splits
  * @returns An array of all workspace parent containers
  */
-export function getAllWorkspaceParents(): WorkspaceParent[] {
+export function getAllWorkspaceParents(app: App): WorkspaceParent[] {
 	const windowMap = new Map();
-	getAllLeaves().forEach((leaf) => {
+	getAllLeaves(app).forEach((leaf) => {
 		const container = leaf.parentSplit!;
 		// Overwrite if ID already exists
 		windowMap.set(container.id, container);
@@ -49,7 +50,7 @@ export function getAllWorkspaceParents(): WorkspaceParent[] {
  * Focuses a specific leaf and handles special views
  * @param leaf - The leaf to focus
  */
-function focusLeaf(leaf: WorkspaceLeaf) {
+function focusLeaf(app: App, leaf: WorkspaceLeaf) {
 	if (!leaf) return;
 
 	app.workspace.setActiveLeaf(leaf, { focus: true });
@@ -66,10 +67,10 @@ function focusLeaf(leaf: WorkspaceLeaf) {
  * @param app - The Obsidian app instance
  * @param leaf - The reference leaf
  */
-export function gotoRightTab(leaf: WorkspaceLeaf) {
+export function gotoRightTab(app: App, leaf: WorkspaceLeaf) {
 	if (!leaf) return;
 
-	const leaves = getAllLeaves().filter(
+	const leaves = getAllLeaves(app).filter(
 		(l) => l.parentSplit === leaf.parentSplit
 	);
 	const index = leaves.indexOf(leaf);
@@ -81,9 +82,9 @@ export function gotoRightTab(leaf: WorkspaceLeaf) {
 
 	// Wrap around to the first tab if at the end
 	if (index === leaves.length - 1) {
-		focusLeaf(leaves[0]);
+		focusLeaf(app, leaves[0]);
 	} else {
-		focusLeaf(leaves[index + 1]);
+		focusLeaf(app, leaves[index + 1]);
 	}
 }
 
@@ -92,10 +93,10 @@ export function gotoRightTab(leaf: WorkspaceLeaf) {
  * @param app - The Obsidian app instance
  * @param leaf - The reference leaf
  */
-export function gotoLeftTab(leaf: WorkspaceLeaf) {
+export function gotoLeftTab(app: App, leaf: WorkspaceLeaf) {
 	if (!leaf) return;
 
-	const leaves = getAllLeaves().filter(
+	const leaves = getAllLeaves(app).filter(
 		(l) => l.parentSplit === leaf.parentSplit
 	);
 	const index = leaves.indexOf(leaf);
@@ -107,9 +108,9 @@ export function gotoLeftTab(leaf: WorkspaceLeaf) {
 
 	// Wrap around to the last tab if at the beginning
 	if (index === 0) {
-		focusLeaf(leaves[leaves.length - 1]);
+		focusLeaf(app, leaves[leaves.length - 1]);
 	} else {
-		focusLeaf(leaves[index - 1]);
+		focusLeaf(app, leaves[index - 1]);
 	}
 }
 
@@ -130,6 +131,6 @@ export function notify(
  * Gets the currently active leaf
  * @returns The active workspace leaf
  */
-export function getActiveLeaf() {
+export function getActiveLeaf(app: App) {
 	return app.workspace.activeLeaf;
 }
