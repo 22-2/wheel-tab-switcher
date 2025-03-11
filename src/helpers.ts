@@ -2,7 +2,7 @@ import { App } from "obsidian";
 import {
 	getAllLeaves,
 	getAllWorkspaceParents,
-	highlight,
+	highlightLeaf,
 } from "./utils/obsidian";
 import type WheelTabSwitcher from "./main";
 
@@ -21,23 +21,10 @@ export function checkIsWheelInTabContainer(evt: WheelEvent): boolean {
 }
 
 /**
- * Finds the leaf (pane) associated with a wheel event on tab headers
- * @param evt - The wheel event to process
- * @returns The leaf object if found, otherwise null or undefined
- *
- * **This meticulous approach is essential to prevent unexpected tab focus jumps.**
- * **Without this careful method to identify the correct leaf associated with the wheel event on tab headers,**
- * **the focus might suddenly shift to a different, unintended tab, causing a jarring user experience.**
- *
- * This function carefully navigates the DOM structure to accurately pinpoint the target leaf by:
- * 1. Verifying the wheel event originates within a tab container.
- * 2. Locating the active tab header element that was wheeled on.
- * 3. Traversing the workspace hierarchy to find relevant parent containers.
- * 4. Matching the active tab header to its corresponding leaf element.
- * 5. Ensuring the found leaf belongs to the correct workspace container.
- *
- * By performing these checks, the function avoids ambiguity and ensures the correct leaf is identified,
- * thus preventing erratic focus behavior and providing a smooth and predictable user interaction when using the mouse wheel on tab headers.
+ * Finds the leaf (pane) associated with a wheel event on tab headers.
+ * Prevents unexpected tab focus jumps when scrolling on tabs.
+ * @param evt - The wheel event
+ * @returns The leaf object or null if not found
  */
 export function findLeafByWheelEvent(
 	plugin: WheelTabSwitcher,
@@ -46,7 +33,7 @@ export function findLeafByWheelEvent(
 	const logger = plugin.logger;
 	logger.debug("findLeafByWheelEvent started", evt);
 
-	// Early return if the wheel event is not in a tab container
+	// Return early if wheel event is not in a tab container
 	if (!checkIsWheelInTabContainer(evt)) {
 		return void logger.debug(
 			"Wheel event is not in a tab container, early return.",
@@ -54,7 +41,7 @@ export function findLeafByWheelEvent(
 	}
 	logger.debug("Wheel event is in a tab container.");
 
-	// First, search from the tab container
+	// Get the tab container element
 	const wheeledTabContainer = (evt.target as HTMLElement).closest(
 		".workspace-tab-header-container",
 	);
@@ -65,9 +52,10 @@ export function findLeafByWheelEvent(
 
 	if (plugin.settings.debug) highlightElement(wheeledTabContainer as HTMLElement);
 
+	// Get the active or any tab header element
 	const wheeledTabHeader =
-		wheeledTabContainer.querySelector(".workspace-tab-header.is-active") ||
-		wheeledTabContainer.querySelector(".workspace-tab-header");
+		wheeledTabContainer.find(".workspace-tab-header.is-active") ||
+		wheeledTabContainer.find(".workspace-tab-header");
 
 	if (!wheeledTabHeader) {
 		return void logger.debug("wheeledTabHeader is null, return.");
@@ -79,7 +67,7 @@ export function findLeafByWheelEvent(
 	const wsParents = getAllWorkspaceParents(plugin.app);
 	// logger.debug("wsParents:", wsParents);
 
-	// Find the leaf that matches the active tab header
+	// Find the leaf matching the wheeled tab header
 	const wheeledLeaf = getAllLeaves(plugin.app).find((leaf) =>
 		leaf.tabHeaderEl.isEqualNode(wheeledTabHeader),
 	);
@@ -90,10 +78,10 @@ export function findLeafByWheelEvent(
 	}
 
 	if (plugin.settings.debug) {
-		highlight(wheeledLeaf);
+		highlightLeaf(wheeledLeaf);
 	}
 
-	// Find the parent container that contains the active tab header
+	// Find parent workspace containing the wheeled tab header
 	const wheeledParent = wsParents.find((split) =>
 		split.containerEl.contains(wheeledTabHeader),
 	);
@@ -103,7 +91,7 @@ export function findLeafByWheelEvent(
 		return void logger.warn("wheeledParent is null, return.");
 	}
 
-	// Find the leaf in the parent container that matches the wheeled leaf
+	// Find the wheeled leaf within the parent workspace
 	const foundLeaf = wheeledParent.children.find(
 		(leaf) => leaf.id === wheeledLeaf.id,
 	);

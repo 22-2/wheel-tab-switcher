@@ -147,7 +147,7 @@ export function getActiveLeaf(app: App) {
 	return app.workspace.activeLeaf;
 }
 
-export function highlight(leaf: WorkspaceLeaf) {
+export function highlightLeaf(leaf: WorkspaceLeaf) {
 	// @ts-expect-error
 	leaf.highlight();
 	// @ts-expect-error
