@@ -62,6 +62,7 @@ export default class WheelTabSwitcher extends Plugin {
 			if (window.Capacitor.getPlatform() !== "web") {
 				return void notify("Mobile is not supported");
 			}
+
 			// Register handler for new windows
 			this.registerEvent(
 				this.app.workspace.on("window-open", (wsWin) => {

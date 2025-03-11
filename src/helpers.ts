@@ -91,10 +91,13 @@ export function findLeafByWheelEvent(
 	}
 
 	// Find the wheeled leaf within the parent workspace
+
 	const foundLeaf = wheeledParent.children.find(
 		(leaf) => leaf.id === wheeledLeaf.id,
 	);
+
 	logger.debug("foundLeaf:", foundLeaf);
+
 	return foundLeaf;
 }
 
