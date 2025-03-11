@@ -82,7 +82,6 @@ export default class WheelTabSwitcher extends Plugin {
 				);
 			});
 
-			this.logger.debug(getAllWorkspaceWindows(this.app));
 			this.logger.debug("init: wheel tab switcher");
 
 		});

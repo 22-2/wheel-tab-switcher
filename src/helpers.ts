@@ -65,13 +65,11 @@ export function findLeafByWheelEvent(
 
 	// Get all workspace parents
 	const wsParents = getAllWorkspaceParents(plugin.app);
-	// logger.debug("wsParents:", wsParents);
 
 	// Find the leaf matching the wheeled tab header
 	const wheeledLeaf = getAllLeaves(plugin.app).find((leaf) =>
 		leaf.tabHeaderEl.isEqualNode(wheeledTabHeader),
 	);
-	// logger.debug("wheeledLeaf:", wheeledLeaf);
 
 	if (!wheeledLeaf) {
 		return void logger.warn("wheeledLeaf is null, return.");
@@ -85,7 +83,6 @@ export function findLeafByWheelEvent(
 	const wheeledParent = wsParents.find((split) =>
 		split.containerEl.contains(wheeledTabHeader),
 	);
-	// logger.debug("wheeledParent:", wheeledParent);
 
 	if (!wheeledParent) {
 		return void logger.warn("wheeledParent is null, return.");
