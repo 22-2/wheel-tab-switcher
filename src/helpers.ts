@@ -111,10 +111,10 @@ export function findLeafByWheelEvent(
 	return foundLeaf;
 }
 
-function highlightElement(element: HTMLElement, color = 'yellow') {
-	element.style.backgroundColor = color; // ハイライト色に変更
-
+function highlightElement(el: HTMLElement, color = 'yellow') {
+	const prefix = "wts-highlight";
+	el.addClass(prefix, color);
 	setTimeout(() => {
-		element.style.backgroundColor = "initial"; // 元の背景色に戻す
-	}, 300); // 300ミリ秒後に戻す（durationはお好みで調整してください）
+		el.removeClass(prefix, color);
+	}, 300);
 }

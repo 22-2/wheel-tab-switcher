@@ -1,0 +1,10 @@
+.wts-highlight {
+	&.red {
+		background-color: red !important;
+		;
+	}
+
+	&.yellow {
+		background-color: yellow !important;
+	}
+}
