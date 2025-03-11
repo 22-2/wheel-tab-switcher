@@ -38,7 +38,8 @@ export default class WheelTabSwitcher extends Plugin {
 			// Find the leaf (pane) associated with the wheel event
 			const leaf = findLeafByWheelEvent(this, evt);
 
-			if (!leaf) return; this.logger.debug("failed to get leaf");
+			if (!leaf) return;
+			this.logger.debug("failed to get leaf");
 
 			const isUp = evt.deltaY <= 0;
 			if (isUp) {
@@ -58,7 +59,6 @@ export default class WheelTabSwitcher extends Plugin {
 		this.logger.debug("WheelTabSwitcher init");
 		this.addSettingTab(new WheelTabSwitcherSettingTab(this));
 		this.app.workspace.onLayoutReady(() => {
-
 			if (window.Capacitor.getPlatform() !== "web") {
 				return void notify("Mobile is not supported");
 			}
@@ -83,7 +83,6 @@ export default class WheelTabSwitcher extends Plugin {
 			});
 
 			this.logger.debug("init: wheel tab switcher");
-
 		});
 	}
 

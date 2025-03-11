@@ -50,7 +50,8 @@ export function findLeafByWheelEvent(
 		return void logger.debug("wheeledTabContainer is null, return.");
 	}
 
-	if (plugin.settings.debug) highlightElement(wheeledTabContainer as HTMLElement);
+	if (plugin.settings.debug)
+		highlightElement(wheeledTabContainer as HTMLElement);
 
 	// Get the active or any tab header element
 	const wheeledTabHeader =
@@ -61,7 +62,8 @@ export function findLeafByWheelEvent(
 		return void logger.debug("wheeledTabHeader is null, return.");
 	}
 
-	if (plugin.settings.debug) highlightElement(wheeledTabHeader as HTMLElement, "red");
+	if (plugin.settings.debug)
+		highlightElement(wheeledTabHeader as HTMLElement, "red");
 
 	// Get all workspace parents
 	const wsParents = getAllWorkspaceParents(plugin.app);
@@ -96,7 +98,7 @@ export function findLeafByWheelEvent(
 	return foundLeaf;
 }
 
-function highlightElement(el: HTMLElement, color = 'yellow') {
+function highlightElement(el: HTMLElement, color = "yellow") {
 	const prefix = "wts-highlight";
 	el.addClass(prefix, color);
 	setTimeout(() => {
