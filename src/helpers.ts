@@ -21,8 +21,8 @@ export function checkIsWheelInTabContainer(evt: WheelEvent): boolean {
 }
 
 /**
- * Finds the leaf (pane) associated with a wheel event on tab headers.
- * Prevents unexpected tab focus jumps when scrolling on tabs.
+ * Finds the leaf associated with a wheel event on tab headers to prevent focus jumps.
+ * Without this detailed approach, whell on tab headers could cause unexpected tab focus changes.
  * @param evt - The wheel event
  * @returns The leaf object or null if not found
  */
@@ -33,7 +33,7 @@ export function findLeafByWheelEvent(
 	const logger = plugin.logger;
 	logger.debug("findLeafByWheelEvent started", evt);
 
-	// Return early if wheel event is not in a tab container
+	// Check if the wheel event is within a tab container.
 	if (!checkIsWheelInTabContainer(evt)) {
 		return void logger.debug(
 			"Wheel event is not in a tab container, early return.",
@@ -41,11 +41,12 @@ export function findLeafByWheelEvent(
 	}
 	logger.debug("Wheel event is in a tab container.");
 
-	// Get the tab container element
+	// Get the tab container element that received the wheel event.
 	const wheeledTabContainer = (evt.target as HTMLElement).closest(
 		".workspace-tab-header-container",
 	);
 
+	// If no tab container is found, return.
 	if (!wheeledTabContainer) {
 		return void logger.debug("wheeledTabContainer is null, return.");
 	}
@@ -53,11 +54,12 @@ export function findLeafByWheelEvent(
 	if (plugin.settings.debug)
 		highlightElement(wheeledTabContainer as HTMLElement);
 
-	// Get the active or any tab header element
+	// Get the active tab header, or any tab header if none is active within the container.
 	const wheeledTabHeader =
 		wheeledTabContainer.find(".workspace-tab-header.is-active") ||
 		wheeledTabContainer.find(".workspace-tab-header");
 
+	// If no tab header is found, return.
 	if (!wheeledTabHeader) {
 		return void logger.debug("wheeledTabHeader is null, return.");
 	}
@@ -65,14 +67,12 @@ export function findLeafByWheelEvent(
 	if (plugin.settings.debug)
 		highlightElement(wheeledTabHeader as HTMLElement, "red");
 
-	// Get all workspace parents
-	const wsParents = getAllWorkspaceParents(plugin.app);
-
-	// Find the leaf matching the wheeled tab header
+	// Find the leaf (pane) that corresponds to the wheeled tab header.
 	const wheeledLeaf = getAllLeaves(plugin.app).find((leaf) =>
 		leaf.tabHeaderEl.isEqualNode(wheeledTabHeader),
 	);
 
+	// If no matching leaf is found, return.
 	if (!wheeledLeaf) {
 		return void logger.warn("wheeledLeaf is null, return.");
 	}
@@ -81,23 +81,27 @@ export function findLeafByWheelEvent(
 		highlightLeaf(wheeledLeaf);
 	}
 
-	// Find parent workspace containing the wheeled tab header
+	// Get all workspace parents (splits).
+	const wsParents = getAllWorkspaceParents(plugin.app);
+
+	// Find the workspace parent that contains the wheeled tab header.
 	const wheeledParent = wsParents.find((split) =>
 		split.containerEl.contains(wheeledTabHeader),
 	);
 
+	// If no parent workspace is found, return.
 	if (!wheeledParent) {
 		return void logger.warn("wheeledParent is null, return.");
 	}
 
-	// Find the wheeled leaf within the parent workspace
-
+	// Find the specific leaf within the parent workspace that matches the wheeled leaf.
 	const foundLeaf = wheeledParent.children.find(
 		(leaf) => leaf.id === wheeledLeaf.id,
 	);
 
 	logger.debug("foundLeaf:", foundLeaf);
 
+	// Return the found leaf.
 	return foundLeaf;
 }
 
