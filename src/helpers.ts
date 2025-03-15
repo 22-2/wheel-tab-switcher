@@ -51,8 +51,9 @@ export function findLeafByWheelEvent(
 		return void logger.debug("wheeledTabContainer is null, return.");
 	}
 
-	if (plugin.settings.debug)
+	if (plugin.settings.debug) {
 		highlightElement(wheeledTabContainer as HTMLElement);
+	}
 
 	// Get the active tab header, or any tab header if none is active within the container.
 	const wheeledTabHeader =
@@ -64,8 +65,9 @@ export function findLeafByWheelEvent(
 		return void logger.debug("wheeledTabHeader is null, return.");
 	}
 
-	if (plugin.settings.debug)
+	if (plugin.settings.debug) {
 		highlightElement(wheeledTabHeader as HTMLElement, "red");
+	}
 
 	// Find the leaf (pane) that corresponds to the wheeled tab header.
 	const wheeledLeaf = getAllLeaves(plugin.app).find((leaf) =>
