@@ -10,7 +10,7 @@
 		"format": "biome format --write src/"
 	},
 	"keywords": [],
-	"author": "",
+	"author": "22-2",
 	"license": "MIT",
 	"devDependencies": {
 		"@biomejs/biome": "1.9.4",
