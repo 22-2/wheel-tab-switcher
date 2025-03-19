@@ -12,7 +12,7 @@ export class WheelTabSwitcherSettingTab extends PluginSettingTab {
 		new Setting(this.containerEl).setName("⚙️ Wheel Tab Switcher Settings").setHeading();
 
 		new Setting(this.containerEl)
-			.setName("Top Bar Wheel Tab Switching (🚧 experimental)")
+			.setName("Top bar wheel tab switching (🚧 experimental)")
 			.setDesc("Allows you to switch tabs by scrolling the mouse wheel over the top bar (non-tab area) of the file pane. **⚠ Turning this on disable window dragging on the top bar.**")
 			.addToggle((toggle) => {
 				toggle.setValue(this.plugin.settings.topBarWheelTabSwitch).onChange(async (val) => {
