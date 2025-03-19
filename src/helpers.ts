@@ -1,23 +1,25 @@
-import { App } from "obsidian";
+import type WheelTabSwitcher from "./main";
 import {
 	getAllLeaves,
 	getAllWorkspaceParents,
 	highlightLeaf,
 } from "./utils/obsidian";
-import type WheelTabSwitcher from "./main";
 
 /**
  * Determines if the wheel event occurred within a tab container
  * @param evt - The wheel event to check
  * @returns Boolean indicating if the event occurred in a tab container
  */
+const TAB_HEADER_SELECTOR = ".workspace-tab-header";
+const TAB_HEADER_CONTAINER_SELECTOR = ".workspace-tab-header-container";
+
 export function checkIsWheelInTabContainer(evt: WheelEvent): boolean {
 	const el = evt.target as HTMLElement | null;
-	if (!el) return false;
+	if (!el) {
+		return false;
+	}
 
-	return Boolean(
-		el.closest(".workspace-tab-header") || el.find(".workspace-tab-header"),
-	);
+	return !!(el.closest(TAB_HEADER_SELECTOR) || el.closest(TAB_HEADER_CONTAINER_SELECTOR));
 }
 
 /**

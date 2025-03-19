@@ -1,4 +1,4 @@
-import { Plugin, WorkspaceWindow } from "obsidian";
+import { Plugin } from "obsidian";
 import { findLeafByWheelEvent } from "src/helpers";
 import {
 	DEFAULT_SETTINGS,
@@ -83,6 +83,7 @@ export default class WheelTabSwitcher extends Plugin {
 				);
 			});
 
+			this.initTopBarWheelTabSwitch();
 			this.logger.debug("init: wheel tab switcher");
 		});
 	}
@@ -93,5 +94,9 @@ export default class WheelTabSwitcher extends Plugin {
 
 	saveSettings(settings: Settings = this.settings) {
 		return this.saveData(settings);
+	}
+
+	initTopBarWheelTabSwitch() {
+		document.body.classList.toggle("topbar-wheel-switch", this.settings.topBarWheelTabSwitch);
 	}
 }

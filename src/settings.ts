@@ -12,12 +12,13 @@ export class WheelTabSwitcherSettingTab extends PluginSettingTab {
 		new Setting(this.containerEl).setName("⚙️ Wheel Tab Switcher Settings").setHeading();
 
 		new Setting(this.containerEl)
-			.setName("Top Bar Scroll Wheel Tab Switching")
-			.setDesc("Allows you to switch tabs by scrolling the mouse wheel over the top bar (non-tab area) of the file pane.") // setDesc を追加
+			.setName("Top Bar Wheel Tab Switching (🚧 experimental)")
+			.setDesc("Allows you to switch tabs by scrolling the mouse wheel over the top bar (non-tab area) of the file pane. **⚠ Turning this on disable window dragging on the top bar.**")
 			.addToggle((toggle) => {
-				toggle.setValue(this.plugin.settings.topBarScrollWheelTabSwitch).onChange(async (val) => {
-					this.plugin.settings.topBarScrollWheelTabSwitch = val;
+				toggle.setValue(this.plugin.settings.topBarWheelTabSwitch).onChange(async (val) => {
+					this.plugin.settings.topBarWheelTabSwitch = val;
 					await this.plugin.saveSettings();
+					this.plugin.initTopBarWheelTabSwitch();
 				});
 			});
 
@@ -34,10 +35,10 @@ export class WheelTabSwitcherSettingTab extends PluginSettingTab {
 
 export interface Settings {
 	debug: boolean;
-	topBarScrollWheelTabSwitch: boolean;
+	topBarWheelTabSwitch: boolean;
 }
 
 export const DEFAULT_SETTINGS: Settings = {
 	debug: false,
-	topBarScrollWheelTabSwitch: false,
+	topBarWheelTabSwitch: false,
 };

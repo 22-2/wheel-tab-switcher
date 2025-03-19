@@ -8,3 +8,9 @@
 		background-color: yellow !important;
 	}
 }
+
+body.topbar-wheel-switch .workspace-tab-header-spacer {
+	-webkit-app-region: none !important;
+	/* -webkit-app-region: drag eats all click events · Issue #1354 · electron/electron */
+	/* https://github.com/electron/electron/issues/1354 */
+}
