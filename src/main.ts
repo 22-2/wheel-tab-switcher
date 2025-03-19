@@ -10,8 +10,7 @@ import { LoggerService } from "./utils/logger";
 import {
 	getAllWorkspaceWindows,
 	gotoLeftSiblingTab,
-	gotoRightSiblingTab,
-	notify,
+	gotoRightSiblingTab
 } from "./utils/obsidian";
 
 /**
@@ -59,9 +58,6 @@ export default class WheelTabSwitcher extends Plugin {
 		this.logger.debug("WheelTabSwitcher init");
 		this.addSettingTab(new WheelTabSwitcherSettingTab(this));
 		this.app.workspace.onLayoutReady(() => {
-			if (window.Capacitor.getPlatform() !== "web") {
-				return void notify("Mobile is not supported");
-			}
 
 			// Register handler for new windows
 			this.registerEvent(
