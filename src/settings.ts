@@ -9,7 +9,7 @@ export class WheelTabSwitcherSettingTab extends PluginSettingTab {
 	display(): void {
 		this.containerEl.empty();
 
-		new Setting(this.containerEl).setName("⚙️ Wheel Tab Switcher Settings").setHeading();
+		new Setting(this.containerEl).setName("💪 Enhancements");
 
 		new Setting(this.containerEl)
 			.setName("Top bar wheel tab switching (🚧 experimental)")
@@ -22,7 +22,7 @@ export class WheelTabSwitcherSettingTab extends PluginSettingTab {
 				});
 			});
 
-		new Setting(this.containerEl).setName("🐞 Dev").setHeading();
+		new Setting(this.containerEl).setName("🐞 Dev");
 
 		new Setting(this.containerEl).setName("debug").addToggle((toggle) => {
 			toggle.setValue(this.plugin.settings.debug).onChange(async (val) => {
