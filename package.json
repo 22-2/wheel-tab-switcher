@@ -6,8 +6,13 @@
 	"scripts": {
 		"dev": "node esbuild.config.mjs",
 		"build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
-		"version": "node version-bump.mjs && git add manifest.json versions.json package.json",
-		"format": "biome format --write src/"
+		"version": "node version-bump.ext.mjs",
+		"format": "biome format --write src/",
+		"version:update": "node version-bump.ext.mjs update",
+		"version:commit": "node version-bump.ext.mjs commit",
+		"version:tag": "node version-bump.ext.mjs tag",
+		"version:push": "node version-bump.ext.mjs push",
+		"version:all": "node version-bump.ext.mjs all"
 	},
 	"keywords": [],
 	"author": "22-2",
