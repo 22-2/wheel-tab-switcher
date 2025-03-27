@@ -2,16 +2,16 @@
 
 A plugin for [Obsidian](https://obsidian.md) that allows you to switch between tabs using your mouse wheel when hovering over tab headers.
 
+## Demo
+
+![Demo Video](https://media.githubusercontent.com/media/22-2/wheel-tab-switcher/refs/heads/main/assets/demo.gif?raw=true)
+
 ## Features
 
 - Switch tabs with mouse wheel on tab headers.
 - Scroll up: previous tab, Scroll down: next tab.
 - Loop around at tab ends.
 - Works in all Obsidian windows.
-
-## Demo
-
-![Demo Video](https://media.githubusercontent.com/media/22-2/wheel-tab-switcher/refs/heads/main/assets/demo.gif?raw=true)
 
 ## How to Use
 
