@@ -1,4 +1,4 @@
-# Obsidian Wheel Tab Switcher
+# Wheel Tab Switcher
 
 A plugin for [Obsidian](https://obsidian.md) that allows you to switch between tabs using your mouse wheel when hovering over tab headers.
 
