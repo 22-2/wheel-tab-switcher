@@ -1,6 +1,6 @@
 {
 	"name": "wheel-tab-switcher",
-	"version": "0.2.4",
+	"version": "0.2.5",
 	"description": "Switch between Obsidian tabs using your mouse wheel when hovering over tab headers",
 	"main": "main.js",
 	"scripts": {

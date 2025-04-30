@@ -1,7 +1,7 @@
 {
 	"id": "wheel-tab-switcher",
 	"name": "Wheel Tab Switcher",
-	"version": "0.2.4",
+	"version": "0.2.5",
 	"minAppVersion": "1.8.9",
 	"description": "Switch between Tabs using your mouse wheel when hovering over tab headers",
 	"author": "Obsidian",
