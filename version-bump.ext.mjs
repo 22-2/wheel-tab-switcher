@@ -35,7 +35,7 @@ const CONFIG = {
 		},
 	},
 	git: {
-		tagPrefix: "v",
+		tagPrefix: "",
 	},
 };
 
