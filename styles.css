@@ -9,7 +9,8 @@
 	}
 }
 
-body.topbar-wheel-switch .workspace-tab-header-spacer {
+body.topbar-wheel-switch .workspace-tab-header-spacer,
+body.topbar-wheel-switch .workspace-tab-header-container-inner {
 	-webkit-app-region: none !important;
 	/* -webkit-app-region: drag eats all click events · Issue #1354 · electron/electron */
 	/* https://github.com/electron/electron/issues/1354 */
