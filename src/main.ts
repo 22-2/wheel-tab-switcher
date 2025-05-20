@@ -10,7 +10,7 @@ import { LoggerService } from "./utils/logger";
 import {
 	getAllWorkspaceWindows,
 	gotoLeftSiblingTab,
-	gotoRightSiblingTab
+	gotoRightSiblingTab,
 } from "./utils/obsidian";
 
 /**
@@ -31,13 +31,14 @@ export default class WheelTabSwitcher extends Plugin {
 		return (evt: WheelEvent) => {
 			this.logger.debug("called createWheelHandler");
 
-			// Ensure window is focused
-			getElectronMainWindow(win).focus();
-
 			// Find the leaf (pane) associated with the wheel event
 			const leaf = findLeafByWheelEvent(this, evt);
 
 			if (!leaf) return;
+
+			// Ensure window is focused
+			getElectronMainWindow(win).focus();
+
 			this.logger.debug("failed to get leaf");
 
 			const isUp = evt.deltaY <= 0;
@@ -58,16 +59,15 @@ export default class WheelTabSwitcher extends Plugin {
 		this.logger.debug("WheelTabSwitcher init");
 		this.addSettingTab(new WheelTabSwitcherSettingTab(this));
 		this.app.workspace.onLayoutReady(() => {
-
 			// Register handler for new windows
 			this.registerEvent(
 				this.app.workspace.on("window-open", (wsWin) => {
 					this.registerDomEvent(
 						wsWin.win,
 						"wheel",
-						this.createWheelHandler(wsWin.win),
+						this.createWheelHandler(wsWin.win)
 					);
-				}),
+				})
 			);
 
 			// Register handler for the all windows
@@ -75,7 +75,7 @@ export default class WheelTabSwitcher extends Plugin {
 				this.registerDomEvent(
 					wsWin.win,
 					"wheel",
-					this.createWheelHandler(wsWin.win),
+					this.createWheelHandler(wsWin.win)
 				);
 			});
 
@@ -85,7 +85,11 @@ export default class WheelTabSwitcher extends Plugin {
 	}
 
 	async loadSettings() {
-		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
+		this.settings = Object.assign(
+			{},
+			DEFAULT_SETTINGS,
+			await this.loadData()
+		);
 	}
 
 	saveSettings(settings: Settings = this.settings) {
@@ -93,7 +97,11 @@ export default class WheelTabSwitcher extends Plugin {
 	}
 
 	initTopBarWheelTabSwitch() {
-		document.body.classList.toggle("topbar-wheel-switch", this.settings.topBarWheelTabSwitch);
-		return () => document.body.classList.toggle("topbar-wheel-switch", false);
+		document.body.classList.toggle(
+			"topbar-wheel-switch",
+			this.settings.topBarWheelTabSwitch
+		);
+		return () =>
+			document.body.classList.toggle("topbar-wheel-switch", false);
 	}
 }
