@@ -12,7 +12,6 @@ jobs:
             contents: write
         steps:
             - uses: actions/checkout@v3
-
             - name: Use Node.js
               uses: actions/setup-node@v3
               with:
@@ -31,4 +30,4 @@ jobs:
 
                   gh release create "$tag" \
                     --title="$tag" \
-                    main.js manifest.json
+                    main.js manifest.json styles.css
