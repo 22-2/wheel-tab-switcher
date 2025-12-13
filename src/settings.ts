@@ -22,7 +22,7 @@ export class WheelTabSwitcherSettingTab extends PluginSettingTab {
 					.onChange(async (val) => {
 						this.plugin.settings.topBarWheelTabSwitch = val;
 						await this.plugin.saveSettings();
-						this.plugin.initTopBarWheelTabSwitch();
+						this.plugin.setTtleBarWheelTabSwitch();
 					});
 			});
 

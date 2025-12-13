@@ -79,7 +79,7 @@ export default class WheelTabSwitcher extends Plugin {
 				);
 			});
 
-			this.register(this.initTopBarWheelTabSwitch());
+			this.register(this.setTtleBarWheelTabSwitch());
 			this.logger.debug("init: wheel tab switcher");
 		});
 	}
@@ -96,12 +96,12 @@ export default class WheelTabSwitcher extends Plugin {
 		return this.saveData(settings);
 	}
 
-	initTopBarWheelTabSwitch() {
+	setTtleBarWheelTabSwitch() {
 		document.body.classList.toggle(
-			"topbar-wheel-switch",
+			"titlebar-wheel-switch",
 			this.settings.topBarWheelTabSwitch
 		);
 		return () =>
-			document.body.classList.toggle("topbar-wheel-switch", false);
+			document.body.classList.toggle("titlebar-wheel-switch", false);
 	}
 }
