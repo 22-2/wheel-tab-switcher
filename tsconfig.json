@@ -1,6 +1,5 @@
 {
 	"compilerOptions": {
-		"baseUrl": ".",
 		"inlineSourceMap": true,
 		"inlineSources": true,
 		"module": "ESNext",
@@ -11,6 +10,7 @@
 		"importHelpers": true,
 		"isolatedModules": true,
 		"strictNullChecks": true,
+		"paths": {"*": ["./*"]},
 		"lib": ["DOM", "ESNext"],
 		"types": ["obsidian-typings"]
 	},
