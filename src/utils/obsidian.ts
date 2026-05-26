@@ -4,6 +4,7 @@ import {
 	WorkspaceLeaf,
 	Notice,
 	App,
+    WorkspaceContainer,
 } from "obsidian";
 
 /**
@@ -46,8 +47,8 @@ export function getAllLeaves(app: App): WorkspaceLeaf[] {
  * @param app - Obsidian app
  * @returns An array of all workspace windows
  */
-export function getAllWorkspaceWindows(app: App): WorkspaceWindow[] {
-	return getWorkspaceItems<WorkspaceWindow>(app, (leaf) => leaf.getContainer());
+export function getAllWorkspaceWindows(app: App): WorkspaceContainer[] {
+	return getWorkspaceItems<WorkspaceContainer>(app, (leaf) => leaf.getContainer());
 }
 
 /**
@@ -148,8 +149,6 @@ export function getActiveLeaf(app: App) {
 }
 
 export function highlightLeaf(leaf: WorkspaceLeaf) {
-	// @ts-expect-error
 	leaf.highlight();
-	// @ts-expect-error
 	setTimeout(() => leaf.unhighlight(), 300);
 }

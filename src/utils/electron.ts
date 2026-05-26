@@ -1,4 +1,4 @@
-import { ElectronWindow } from "obsidian-typings";
+import type { ElectronWindow } from "obsidian-typings";
 
 /**
  * Gets the main Electron window associated with a renderer window

@@ -2,7 +2,7 @@ import { Plugin } from "obsidian";
 import { findLeafByWheelEvent } from "src/helpers";
 import {
 	DEFAULT_SETTINGS,
-	Settings,
+	type Settings,
 	WheelTabSwitcherSettingTab,
 } from "./settings";
 import { getElectronMainWindow } from "./utils/electron";
@@ -20,7 +20,7 @@ import {
 export default class WheelTabSwitcher extends Plugin {
 	settings: Settings = DEFAULT_SETTINGS;
 
-	logger: LoggerService;
+	logger!: LoggerService;
 
 	/**
 	 * Creates a wheel event handler for a specific window
