@@ -9,12 +9,12 @@ export class WheelTabSwitcherSettingTab extends PluginSettingTab {
 	display(): void {
 		this.containerEl.empty();
 
-		new Setting(this.containerEl).setName("💪 Enhancements");
+		new Setting(this.containerEl).setName("Enhancements");
 
 		new Setting(this.containerEl)
-			.setName("Scroll on Empty Tab Area to Switch (🚧 Experimental)")
+			.setName("Scroll on Empty Tab Area to Switch (Experimental)")
 			.setDesc(
-				`Allows you to switch tabs by scrolling on the **empty space of the tab bar** (the area next to your tabs). ⚠️ **Warning:** This prevents dragging the window from that area when the "Hidden" frame style is enabled.`
+				`Allows you to switch tabs by scrolling on the **empty space of the tab bar** (the area next to your tabs). **Warning:** This prevents dragging the window from that area when the "Hidden" frame style is enabled.`
 			)
 			.addToggle((toggle) => {
 				toggle
