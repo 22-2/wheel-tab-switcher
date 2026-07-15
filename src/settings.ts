@@ -26,6 +26,40 @@ export class WheelTabSwitcherSettingTab extends PluginSettingTab {
 					});
 			});
 
+		new Setting(this.containerEl).setName("Advanced");
+
+		new Setting(this.containerEl)
+			.setName("Skip tabs to switch")
+			.setHeading();
+
+		new Setting(this.containerEl)
+			.setName("CSS-hidden tabs")
+			.setDesc(
+				"Skip tab headers that are hidden via CSS (display: none)."
+			)
+			.addToggle((toggle) => {
+				toggle
+					.setValue(this.plugin.settings.skipCssHiddenTabs)
+					.onChange(async (val) => {
+						this.plugin.settings.skipCssHiddenTabs = val;
+						await this.plugin.saveSettings();
+					});
+			});
+
+		new Setting(this.containerEl)
+			.setName("Unloaded plugin tabs")
+			.setDesc(
+				"Skip tabs whose plugin has not been loaded (data-type is undefined)."
+			)
+			.addToggle((toggle) => {
+				toggle
+					.setValue(this.plugin.settings.skipUnloadedPluginTabs)
+					.onChange(async (val) => {
+						this.plugin.settings.skipUnloadedPluginTabs = val;
+						await this.plugin.saveSettings();
+					});
+			});
+
 		new Setting(this.containerEl).setName("Dev");
 
 		new Setting(this.containerEl).setName("debug").addToggle((toggle) => {
@@ -42,9 +76,13 @@ export class WheelTabSwitcherSettingTab extends PluginSettingTab {
 export interface Settings {
 	debug: boolean;
 	topBarWheelTabSwitch: boolean;
+	skipCssHiddenTabs: boolean;
+	skipUnloadedPluginTabs: boolean;
 }
 
 export const DEFAULT_SETTINGS: Settings = {
 	debug: false,
 	topBarWheelTabSwitch: false,
+	skipCssHiddenTabs: false,
+	skipUnloadedPluginTabs: false,
 };

@@ -60,6 +60,40 @@ export function getAllWorkspaceParents(app: App): WorkspaceParent[] {
 }
 
 /**
+ * Checks if a tab header element is hidden via CSS (display: none on itself or an ancestor).
+ * @param el - The tab header element to check
+ * @returns true if the element is effectively hidden
+ */
+function isTabHeaderHidden(el: HTMLElement): boolean {
+	if (!el) return true;
+	return !el.isShown();
+}
+
+/**
+ * Checks if a leaf's plugin has not been loaded.
+ * A plugin is considered unloaded when the leaf content has data-type="undefined".
+ * @param leaf - The workspace leaf to check
+ * @returns true if the leaf's plugin appears unloaded
+ */
+function isUnloadedPluginLeaf(leaf: WorkspaceLeaf): boolean {
+	return (
+		// @ts-expect-error
+		(leaf.view.emptyStateEl as HTMLDivElement)?.classList.contains("empty-state")
+	);
+}
+
+export type SkipOptions = {
+	skipCssHiddenTabs?: boolean;
+	skipUnloadedPluginTabs?: boolean;
+};
+
+function shouldSkipLeaf(leaf: WorkspaceLeaf, options: SkipOptions): boolean {
+	if (options.skipCssHiddenTabs && isTabHeaderHidden(leaf.tabHeaderEl)) return true;
+	if (options.skipUnloadedPluginTabs && isUnloadedPluginLeaf(leaf)) return true;
+	return false;
+}
+
+/**
  * Focuses a specific leaf and handles special views
  * @param app - Obsidian app
  * @param leaf - The leaf to focus
@@ -81,8 +115,14 @@ function focusLeaf(app: App, leaf: WorkspaceLeaf) {
  * @param app - The Obsidian app instance
  * @param argLeaf - The reference leaf
  * @param direction - 1 for right, -1 for left
+ * @param skipOptions - Options controlling which tabs to skip
  */
-function gotoSiblingTab(app: App, argLeaf: WorkspaceLeaf, direction: 1 | -1) {
+function gotoSiblingTab(
+	app: App,
+	argLeaf: WorkspaceLeaf,
+	direction: 1 | -1,
+	skipOptions: SkipOptions = {},
+) {
 	const siblingLeaves = argLeaf.parentSplit?.children;
 	if (!siblingLeaves) return;
 
@@ -94,15 +134,25 @@ function gotoSiblingTab(app: App, argLeaf: WorkspaceLeaf, direction: 1 | -1) {
 		);
 	}
 
-	const nextIndex = index + direction;
-	let targetIndex = nextIndex;
+	let targetIndex = index;
+	let steps = 0;
+	const maxSteps = siblingLeaves.length;
 
-	if (nextIndex < 0) {
-		// Wrap around to the last tab if at the beginning (for left)
-		targetIndex = siblingLeaves.length - 1;
-	} else if (nextIndex >= siblingLeaves.length) {
-		// Wrap around to the first tab if at the end (for right)
-		targetIndex = 0;
+	while (steps < maxSteps) {
+		targetIndex += direction;
+
+		if (targetIndex < 0) {
+			targetIndex = siblingLeaves.length - 1;
+		} else if (targetIndex >= siblingLeaves.length) {
+			targetIndex = 0;
+		}
+
+		steps++;
+
+		if (!skipOptions.skipCssHiddenTabs && !skipOptions.skipUnloadedPluginTabs) break;
+
+		const candidateLeaf = siblingLeaves[targetIndex];
+		if (!shouldSkipLeaf(candidateLeaf, skipOptions)) break;
 	}
 
 	focusLeaf(app, siblingLeaves[targetIndex]);
@@ -112,18 +162,28 @@ function gotoSiblingTab(app: App, argLeaf: WorkspaceLeaf, direction: 1 | -1) {
  * Navigates to the tab to the right of the current tab
  * @param app - The Obsidian app instance
  * @param argLeaf - The reference leaf
+ * @param skipOptions - Options controlling which tabs to skip
  */
-export function gotoRightSiblingTab(app: App, argLeaf: WorkspaceLeaf) {
-	gotoSiblingTab(app, argLeaf, 1);
+export function gotoRightSiblingTab(
+	app: App,
+	argLeaf: WorkspaceLeaf,
+	skipOptions: SkipOptions = {},
+) {
+	gotoSiblingTab(app, argLeaf, 1, skipOptions);
 }
 
 /**
  * Navigates to the tab to the left of the current tab
  * @param app - The Obsidian app instance
- * @param leaf - The reference leaf
+ * @param argLeaf - The reference leaf
+ * @param skipOptions - Options controlling which tabs to skip
  */
-export function gotoLeftSiblingTab(app: App, argLeaf: WorkspaceLeaf) {
-	gotoSiblingTab(app, argLeaf, -1);
+export function gotoLeftSiblingTab(
+	app: App,
+	argLeaf: WorkspaceLeaf,
+	skipOptions: SkipOptions = {},
+) {
+	gotoSiblingTab(app, argLeaf, -1, skipOptions);
 }
 
 /**

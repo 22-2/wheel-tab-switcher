@@ -11,6 +11,7 @@ import {
 	getAllWorkspaceWindows,
 	gotoLeftSiblingTab,
 	gotoRightSiblingTab,
+	type SkipOptions,
 } from "./utils/obsidian";
 
 /**
@@ -39,11 +40,16 @@ export default class WheelTabSwitcher extends Plugin {
 			// Ensure window is focused
 			getElectronMainWindow(win).focus();
 
+			const skipOptions: SkipOptions = {
+				skipCssHiddenTabs: this.settings.skipCssHiddenTabs,
+				skipUnloadedPluginTabs: this.settings.skipUnloadedPluginTabs,
+			};
+
 			const isUp = evt.deltaY <= 0;
 			if (isUp) {
-				gotoLeftSiblingTab(this.app, leaf);
+				gotoLeftSiblingTab(this.app, leaf, skipOptions);
 			} else {
-				gotoRightSiblingTab(this.app, leaf);
+				gotoRightSiblingTab(this.app, leaf, skipOptions);
 			}
 		};
 	}
