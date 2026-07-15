@@ -17,7 +17,6 @@
         // Type definitions
         "types": ["obsidian-typings"],
         "lib": ["DOM", "ESNext"],
-        "jsx": "react-jsx"
     },
     "include": ["src/**/*.ts"],
     "exclude": ["node_modules"]
