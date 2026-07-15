@@ -26,7 +26,7 @@ export class WheelTabSwitcherSettingTab extends PluginSettingTab {
 					});
 			});
 
-		new Setting(this.containerEl).setName("🐞 Dev");
+		new Setting(this.containerEl).setName("Dev");
 
 		new Setting(this.containerEl).setName("debug").addToggle((toggle) => {
 			toggle
