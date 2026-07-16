@@ -71,15 +71,13 @@ function isTabHeaderHidden(el: HTMLElement): boolean {
 
 /**
  * Checks if a leaf's plugin has not been loaded.
- * A plugin is considered unloaded when the leaf content has data-type="undefined".
+ * Detects via the ghost icon which is used by Obsidian's internal unknown view (BD).
  * @param leaf - The workspace leaf to check
  * @returns true if the leaf's plugin appears unloaded
  */
 function isUnloadedPluginLeaf(leaf: WorkspaceLeaf): boolean {
-	return (
-		// @ts-expect-error
-		(leaf.view.emptyStateEl as HTMLDivElement)?.classList.contains("empty-state")
-	);
+	// BD (unknown view) uses lucide-ghost icon when plugin is not loaded
+	return leaf.tabHeaderEl.find("svg")?.classList.contains("lucide-ghost");
 }
 
 export type SkipOptions = {

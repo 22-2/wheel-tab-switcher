@@ -49,7 +49,7 @@ export class WheelTabSwitcherSettingTab extends PluginSettingTab {
 		new Setting(this.containerEl)
 			.setName("Unloaded plugin tabs")
 			.setDesc(
-				"Skip tabs whose plugin has not been loaded (data-type is undefined)."
+				"Skip tabs whose plugin has not been loaded."
 			)
 			.addToggle((toggle) => {
 				toggle
