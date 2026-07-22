@@ -13,18 +13,21 @@ jobs:
             id-token: write
             attestations: write
         steps:
-            - uses: actions/checkout@v6
+            - uses: actions/checkout@v7
+
+            - name: Set up pnpm
+              uses: pnpm/action-setup@v6
 
             - name: Use Node.js
-              uses: actions/setup-node@v6
+              uses: actions/setup-node@v7
               with:
                   node-version: 24
-                  cache: 'npm'
+                  cache: 'pnpm'
 
             - name: Build plugin
               run: |
-                  npm ci
-                  npm run build
+                  pnpm install --frozen-lockfile
+                  pnpm run build
 
             - name: Check for optional styles
               id: styles
