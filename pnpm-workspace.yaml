@@ -2,3 +2,6 @@ allowBuilds:
   '@biomejs/biome': true
   esbuild: true
   obsidian-typings: true
+minimumReleaseAgeExclude:
+  - '@obsidian-typings/obsidian-public-1.12.7@6.28.0'
+  - '@obsidian-typings/obsidian-public-latest@6.26.0'
