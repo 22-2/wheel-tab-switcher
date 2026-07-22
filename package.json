@@ -7,7 +7,7 @@
 		"dev": "node esbuild.config.mjs",
 		"build": "tsc6 -noEmit -skipLibCheck && node esbuild.config.mjs production",
 		"lint": "pnpm exec eslint ./src",
-		"format": "pnpm run lint --fix && pnpm exec prettier --editorconfig --write ./src && pnpx organize-imports-cli tsconfig.json"
+		"format": "pnpm run lint --fix && pnpx organize-imports-cli tsconfig.json"
 	},
 	"keywords": [],
 	"author": "22-2",
