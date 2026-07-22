@@ -1,4 +1,10 @@
-import type { ElectronWindow } from "obsidian-typings";
+interface ElectronWindow {
+	focus(): void;
+}
+
+type RendererWindow = Window & {
+	electronWindow: ElectronWindow;
+};
 
 /**
  * Gets the main Electron window associated with a renderer window
@@ -6,6 +12,5 @@ import type { ElectronWindow } from "obsidian-typings";
  * @returns The corresponding Electron main window
  */
 export function getElectronMainWindow(rendererWin: Window): ElectronWindow {
-	// @ts-ignore
-	return rendererWin.electronWindow;
+	return (rendererWin as RendererWindow).electronWindow;
 }

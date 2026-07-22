@@ -1,4 +1,5 @@
 import type WheelTabSwitcher from "./main";
+import { WorkspaceLeaf } from "obsidian";
 import {
 	getAllLeaves,
 	getAllWorkspaceParents,
@@ -100,7 +101,8 @@ export function findLeafByWheelEvent(
 
 	// Find the specific leaf within the parent workspace that matches the wheeled leaf.
 	const foundLeaf = wheeledParent.children.find(
-		(leaf) => leaf.id === wheeledLeaf.id,
+		(leaf): leaf is WorkspaceLeaf =>
+			leaf instanceof WorkspaceLeaf && leaf.id === wheeledLeaf.id,
 	);
 
 	logger.debug("foundLeaf:", foundLeaf);
@@ -112,7 +114,7 @@ export function findLeafByWheelEvent(
 function highlightElement(el: HTMLElement, color = "yellow") {
 	const prefix = "wts-highlight";
 	el.addClass(prefix, color);
-	setTimeout(() => {
+	window.setTimeout(() => {
 		el.removeClass(prefix, color);
 	}, 300);
 }

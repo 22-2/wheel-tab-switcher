@@ -1,10 +1,10 @@
 import {
-	WorkspaceWindow,
-	WorkspaceParent,
-	WorkspaceLeaf,
-	Notice,
 	App,
-    WorkspaceContainer,
+	Notice,
+	WorkspaceContainer,
+	WorkspaceLeaf,
+	WorkspaceParent,
+	WorkspaceWindow,
 } from "obsidian";
 
 /**
@@ -26,7 +26,7 @@ function getWorkspaceItems<T extends WorkspaceWindow | WorkspaceParent>(
 			itemMap.set(item.id, item);
 		}
 	});
-	return Array.from(itemMap.values()) as T[];
+	return Array.from(itemMap.values());
 }
 
 /**
@@ -121,7 +121,9 @@ function gotoSiblingTab(
 	direction: 1 | -1,
 	skipOptions: SkipOptions = {},
 ) {
-	const siblingLeaves = argLeaf.parentSplit?.children;
+	const siblingLeaves = argLeaf.parentSplit?.children.filter(
+		(item): item is WorkspaceLeaf => item instanceof WorkspaceLeaf,
+	);
 	if (!siblingLeaves) return;
 
 	const index = siblingLeaves.findIndex((leaf) => leaf.id === argLeaf.id);
@@ -197,16 +199,7 @@ export function notify(
 	return new Notice(text, timeoutMs ?? undefined);
 }
 
-/**
- * Gets the currently active leaf
- * @param app - Obsidian app
- * @returns The active workspace leaf
- */
-export function getActiveLeaf(app: App) {
-	return app.workspace.activeLeaf;
-}
-
 export function highlightLeaf(leaf: WorkspaceLeaf) {
 	leaf.highlight();
-	setTimeout(() => leaf.unhighlight(), 300);
+	window.setTimeout(() => leaf.unhighlight(), 300);
 }
