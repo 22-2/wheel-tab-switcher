@@ -45,7 +45,7 @@ export class WheelTabSwitcherSettingTab extends PluginSettingTab {
 				heading: "Advanced",
 				items: [
 					{
-						name: "Css-hidden tabs",
+						name: "Skip CSS-hidden tabs",
 						desc: "Skip tab headers that are hidden via CSS (display: none).",
 						control: {
 							type: "toggle",
@@ -53,7 +53,7 @@ export class WheelTabSwitcherSettingTab extends PluginSettingTab {
 						},
 					},
 					{
-						name: "Unloaded plugin tabs",
+						name: "Skip unloaded plugin tabs",
 						desc: "Skip tabs whose plugin has not been loaded.",
 						control: {
 							type: "toggle",
@@ -115,7 +115,7 @@ export class WheelTabSwitcherSettingTab extends PluginSettingTab {
 			.setHeading();
 
 		new Setting(this.containerEl)
-			.setName("Css-hidden tabs")
+			.setName("Skip CSS-hidden tabs")
 			.setDesc(
 				"Skip tab headers that are hidden via CSS (display: none)."
 			)
@@ -129,7 +129,7 @@ export class WheelTabSwitcherSettingTab extends PluginSettingTab {
 			});
 
 		new Setting(this.containerEl)
-			.setName("Unloaded plugin tabs")
+			.setName("Skip unloaded plugin tabs")
 			.setDesc(
 				"Skip tabs whose plugin has not been loaded."
 			)
